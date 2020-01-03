@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="container jumbotron">
+      <h1 class="display-1"> Welcome!</h1>
+      <hr class="my-4">
+      <h4 class="display-4"> How Do I Start? </h4>
+      <p>
+          All you need to join in on the fun is a <em><b>free</b></em> account. To make
+          an account, simply go to the <a href="{% url 'accounts:signup' %}">Sign Up Page</a>,
+          or if you already made an account, go to the <a href="{% url 'accounts:login' %}">Login Page</a>.
+          With that out of the way, you can join your first <em><b>group</b></em>
+      </p>
+      <div class="mx-4 mt-2">
+        <h3> Whats a group?  </h3>
+        <p>
+          Groups are where you and others can join and view the same filtered and posted content!
+        </p>
+        <h4 class="mx-4">Joining a Group</h4>
+        <p class="mx-4">
+          To join a group simply obtain a join code from someone already in the group, and then you can go to the
+          <a href="{% url 'groups:find' %}">Find a Group Page</a>. Once you joined the group that was searched, it will
+          be added to <a href="{% url 'groups:all' %}">My Groups Page</a>. In the <a href="{% url 'groups:all' %}">My Groups Page</a>
+          you can see all the groups you have joined or made.
+        </p>
+      <div>
+    </div>
+
+{% endblock %}

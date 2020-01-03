@@ -1,0 +1,27 @@
+<!-- Drop Down for the users in the group -->
+<div class="modal fade" id="MemberList" tabindex="-1" role="dialog" aria-labelledby="MemberList" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Member List</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <ol>
+        {% for member in group.members.all %}
+          <li> {{member}} &emsp; ({{member.first_name}} {{member.last_name}}) <br> </li>
+          {% if user == group.creator %}
+          <a href="{% url 'groups:kick' pk=user.id slug=group.slug %}" class="btn btn-sm btn-danger"><span class="fa fa-sign-out"></span> Kick</a>
+          {% endif %}
+        {% endfor %}
+      </ol>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

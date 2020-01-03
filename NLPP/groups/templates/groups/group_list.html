@@ -1,0 +1,67 @@
+{% extends "groups/group_base.html" %}
+{% load group_extras %}
+
+{% block pregroup %}
+<div class="col-md-4">
+	<div class="mt-5">
+		<h2>My Groups</h2>
+			<p>These are your groups <br>
+				Groups you join will appear here <br>
+			</p>
+	</div>
+	<a href="{% url 'groups:find' %}" class="btn btn-primary my-4" role="button"><span class="fa fa-search-plus"></span> Find a New Group!</a>
+	<a href="{% url 'groups:create' %}" class="btn btn-warning" role="button"><span class="fa fa-plus"></span> Create New Group!</a>
+</div>
+{% endblock %}
+
+{% block group_content %}
+<div class="col-md-8">
+	<div class="list-group mt-4">
+		<div class="my-4 list-joined-groups">
+		<h3> Groups I'm In:</h3>
+		{% for group in object_list %}
+		{% if user in group.members.all %}
+			<a href="{% url 'groups:single' slug=group.slug %}"
+			class="list-group-item list-group-item-action flex-column align-items-start">
+				<h3 class="mb-1">{{ group.name }}</h3>
+				<p class="mb-1">{{ group.description|safe }}</p>
+				<div class="d-flex w-40 justify-content-between">
+					<small class="text-muted"><span class="badge badge-secondary">
+						#{{ group.slug }}</span></small>
+					<small class="text-muted"><span class="badge badge-secondary">
+						{{ group.members.count }}</span> member{{group.members.count|pluralize}}</small>
+				<span></span><span></span>
+				</div>
+			</a>
+		{% endif %}
+		{% endfor %}
+	</div>
+
+
+	<div class="my-4 list-creator-groups">
+		<h3> Groups I've Made: </h3>
+
+		{% for group in object_list %}
+		{% if user == group.creator %}
+
+			<a href="{% url 'groups:single' slug=group.slug %}"
+			class="list-group-item list-group-item-action flex-column align-items-start">
+				<h3 class="mb-1">{{ group.name }}</h3>
+				<p class="mb-1">{{ group.description|safe }}</p>
+				<div class="d-flex w-40 justify-content-between">
+					<small class="text-muted"><span class="badge badge-secondary">
+						#{{ group.slug }}</span></small>
+					<small class="text-muted"><span class="badge badge-secondary">
+						{{ group.members.count }}</span> member{{ group.members.count|pluralize }}</small>
+				<span></span><span></span>
+				</div>
+			</a>
+		{% endif %}
+		{% endfor %}
+
+	</div>
+
+
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "groups/group_base.html" %}
+{% load bootstrap4 %}
+
+{% block pregroup %}
+<div class="container">
+<div class="jumbotron">
+  <h4 class="display-4">Find a Group!</h4>
+  {% if not valid %}
+  <div class="alert alert-warning">
+    <h4 class="display-5"><em>The Given Code Does Not Exist!</em></h4>
+  </div>
+  {% endif %}
+  <hr class=mt-5>
+  <form method="POST"  action="{% url 'groups:find' %}"id="groupForm">
+  	{% csrf_token %}
+  	{% bootstrap_form form %}
+    {% buttons %}
+  		<button type="submit" class="btn btn-primary btn-large">Find!</button>
+  	{% endbuttons %}
+  </form>
+</div>
+</div>
+{% endblock %}

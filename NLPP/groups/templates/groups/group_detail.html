@@ -1,0 +1,42 @@
+{% extends "groups/group_base.html" %}
+
+{% block pregroup %}
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-4">{{group.name}}</h1>
+    <p class="lead"> &emsp; {{group.description}}</p>
+    <hr class=mt-5>
+    <small>
+      <button type="button" class="btn btn-secondary" data-toggle="modal"
+        data-target="#MemberList">Member Count <span class="badge badge-secondary">
+        {{group.members.count}} </span>
+      </button> &emsp;
+      Join Code <span class="badge badge-secondary"> #{{group.slug}} </span>
+      Creator <span class="badge badge-secondary">{{group.creator}}</span>
+      Updated <span class="badge badge-secondary">{{group.creation_date}}</span>
+    </small>
+
+
+    <div class="content mt-4">
+    	{% if user in group.members.all %}
+    		<a href="{% url 'groups:leave' slug=group.slug %}" class="btn btn-lg btn-warning"><span class="fa fa-sign-out"></span> Leave</a>
+    	{% else %}
+    		<a href="{% url 'groups:join' slug=group.slug %}" class="btn btn-lg btn-success"><span class="fa fa-sign-in"></span> Join</a>
+    	{% endif %}
+
+      {% if user == group.creator %}
+        <a href="{% url 'groups:delete' slug=group.slug %}" class="btn btn-lg btn-outline-danger"><span class="fa fa-trash"></span>Delete</a>
+      {% endif %}
+
+    </div>
+  </div>
+
+
+  {% include "groups/_group_members_modal.html" with group=group%}
+
+{% endblock %}
+
+{# This is where all of the post-thingies will go #}
+{% block group_content %}
+
+{% endblock %}
