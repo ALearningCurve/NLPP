@@ -14,5 +14,6 @@ class GroupForm(forms.ModelForm):
         }
 
 
+
 class GroupFindForm(forms.Form):
     slug = forms.CharField(label="Group Code:",max_length=50)
