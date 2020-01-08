@@ -44,10 +44,11 @@ INSTALLED_APPS = [
 
     'django.contrib.humanize',
     'bootstrap4',
+    'debug_toolbar',
+
     'accounts.apps.AccountsConfig',
     'groups.apps.GroupsConfig',
-
-    'debug_toolbar',
+    'posts.apps.PostsConfig',
 ]
 
 MIDDLEWARE = [
