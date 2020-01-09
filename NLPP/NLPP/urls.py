@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls import handler404
 from django.conf import settings
 from . import views
 
@@ -25,6 +24,7 @@ urlpatterns = [
     path('', views.HomePage.as_view(), name="home"),
     path('accounts/', include('accounts.urls', namespace="accounts")),
     path('groups/', include('groups.urls', namespace="groups")),
+    path('posts/', include("posts.urls", namespace="posts")),
 ]
 
 if settings.DEBUG:

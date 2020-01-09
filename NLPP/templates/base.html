@@ -32,8 +32,11 @@
 
   </head>
   <body class= "w-b">
-    <nav class="navbar sticky-top navbar-expand-sm navbar-dark bg-dark">
-      <a class="navbar-brand mynav" href="{% url 'home' %}">NLPP</a>
+    <nav class="navbar sticky-top navbar-expand-sm navbar-light bg-light">
+      <a class="navbar-brand mynav" href="{% url 'home' %}">
+        <img src="{% static 'NLPP/icons/favicon.ico' %}">
+        NLPP
+      </a>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbar" aria-expanded="false" aria-label="Toggle Navigation">
         <span class="navbar-toggler-icon"></span>
