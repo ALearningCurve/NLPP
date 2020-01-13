@@ -1,1 +1,18 @@
 .w-b {background-color: #EDDDD4}
+p {
+  font-family: verdana;
+  font-size: 20px;
+}
+
+p.normal {
+  font-style: normal;
+}
+
+p.italic {
+  font-style: italic;
+}
+
+p.oblique {
+  font-style: oblique;
+}
+
