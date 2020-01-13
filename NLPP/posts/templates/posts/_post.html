@@ -1,0 +1,28 @@
+<div class="media">
+	<div class="media-body">
+		<div class="jumbotron">
+
+		<h1>{{ post.name|safe }}</h5>
+		<strong> Creator: {{ post.creator.username }}</strong> <br>
+		<strong> Group name: {{ post.group.name }} </strong>
+		<h5> Description </h5>
+			{{ post.description }}
+		<h5> Reading: </h5>
+			{{ post.body_text }}
+
+		<h5 class="my-5"> Assigned on: {{post.creation_date }}  &nbsp; due on: {{ post.due_date }} </h5>
+	</div class=jumbotron>
+
+		<!--
+		<div class="media-footer">
+			{% if user.is_authenticated and post.user == user and not hide_delete %}
+				<a href="{% url 'posts:delete' pk=post.pk %}" title="delete" class="btn btn-simple">
+					<span class="fa fa-remove text-danger" aria-hidden="true"></span>
+					<span class="text-danger icon-label">Delete</span>
+				</a>
+			{% endif %}
+		</div>
+		#}
+		-->
+	</div>
+</div>

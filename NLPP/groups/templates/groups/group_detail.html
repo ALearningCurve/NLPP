@@ -38,5 +38,7 @@
 
 {# This is where all of the post-thingies will go #}
 {% block group_content %}
-
+  {% for post in group.posts.all %}
+    {% include "posts/_post.html" %}
+  {% endfor %}
 {% endblock %}
