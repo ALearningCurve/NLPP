@@ -26,10 +26,10 @@
 				<h3 class="mb-1">{{ group.name }}</h3>
 				<p class="mb-1">{{ group.description|safe }}</p>
 				<div class="d-flex w-40 justify-content-between">
-					<small class="text-muted"><span class="badge badge-secondary">
-						#{{ group.slug }}</span></small>
-					<small class="text-muted"><span class="badge badge-secondary">
-						{{ group.members.count }}</span> member{{group.members.count|pluralize}}</small>
+					<span class="text-muted"><span class="badge badge-secondary">
+						#{{ group.slug }}</span></span>
+					<span class="text-muted"><span class="badge badge-secondary">
+						{{ group.members.count }}</span> member{{group.members.count|pluralize}} </span>
 				<span></span><span></span>
 				</div>
 			</a>
@@ -49,10 +49,10 @@
 				<h3 class="mb-1">{{ group.name }}</h3>
 				<p class="mb-1">{{ group.description|safe }}</p>
 				<div class="d-flex w-40 justify-content-between">
-					<small class="text-muted"><span class="badge badge-secondary">
-						#{{ group.slug }}</span></small>
-					<small class="text-muted"><span class="badge badge-secondary">
-						{{ group.members.count }}</span> member{{ group.members.count|pluralize }}</small>
+					<span class="text-muted"><span class="badge badge-secondary">
+						#{{ group.slug }}</span></span>
+					<span class="text-muted"><span class="badge badge-secondary">
+						{{ group.members.count }}</span> member{{ group.members.count|pluralize }}</span>
 				<span></span><span></span>
 				</div>
 			</a>

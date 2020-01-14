@@ -6,7 +6,7 @@
     <h1 class="display-4">{{group.name}}</h1>
     <p class="lead"> &emsp; {{group.description}}</p>
     <hr class=mt-5>
-    <small>
+    <div>
       <button type="button" class="btn btn-secondary" data-toggle="modal"
         data-target="#MemberList">Member Count <span class="badge badge-secondary">
         {{group.members.count}} </span>
@@ -14,7 +14,7 @@
       Join Code <span class="badge badge-secondary"> #{{group.slug}} </span>
       Creator <span class="badge badge-secondary">{{group.creator}}</span>
       Updated <span class="badge badge-secondary">{{group.creation_date}}</span>
-    </small>
+    </div>
 
 
     <div class="content mt-4">
@@ -36,9 +36,18 @@
 
 {% endblock %}
 
-{# This is where all of the post-thingies will go #}
 {% block group_content %}
+  <div class= "container">
   {% for post in group.posts.all %}
-    {% include "posts/_post.html" %}
+  <a href="{% url 'posts:single' pk=post.pk %}" class="list-group-item list-group-item-action flex-column align-items-start">
+    <h2 class="mb-2">{{ post.name }}</h2>
+    <p class="mt-2"> <em>{{ post.description|safe }} </em></p>
+    <div class="d-flex justify-content-start w-40 ">
+      <span class="text-muted"> Due On <span class="badge badge-secondary">{{ post.due_date }}</span></span>
+      &nbsp;
+      <span class="text-muted ml-3"> Assigned On <span class="badge badge-secondary">{{ post.creation_date }}</span></span>
+    </div>
+  </a>
   {% endfor %}
+  </div>
 {% endblock %}
