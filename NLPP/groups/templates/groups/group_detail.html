@@ -39,6 +39,7 @@
 {% block group_content %}
   <div class= "container">
   {% for post in group.posts.all %}
+  {% if post.creator == group.creator %}
   <a href="{% url 'posts:single' pk=post.pk %}" class="list-group-item list-group-item-action flex-column align-items-start">
     <h2 class="mb-2">{{ post.name }}</h2>
     <p class="mt-2"> <em>{{ post.description|safe }} </em></p>
@@ -48,6 +49,7 @@
       <span class="text-muted ml-3"> Assigned On <span class="badge badge-secondary">{{ post.creation_date }}</span></span>
     </div>
   </a>
+  {% endif %}
   {% endfor %}
   </div>
 {% endblock %}
