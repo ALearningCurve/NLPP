@@ -52,14 +52,16 @@ class CreatePost(LoginRequiredMixin, generic.CreateView):
     model = models.Post
 
 
+    def get_user_groups(self):
+        return get_object_or_404(Group, slug=self.kwargs.get("slug"), creator=self.request.user)
+
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
 
         self.object.creator = self.request.user
 
-        print(self.kwargs.get("slug"))
-        self.object.group = get_object_or_404(Group, slug=self.kwargs.get("slug"));
+        self.object.group = get_object_or_404(Group, slug=self.kwargs.get("slug"))
         self.object.save()
         return super().form_valid(form)
 #
