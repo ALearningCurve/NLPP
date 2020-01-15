@@ -5,9 +5,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.http import Http404
 from django.views import generic
+from django.shortcuts import get_object_or_404
 
 from . import forms
 from . import models
+
+from groups.models import Group
 
 # from django.contrib.auth import get_user_model
 # User = get_user_model()
@@ -52,7 +55,11 @@ class CreatePost(LoginRequiredMixin, generic.CreateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
+
         self.object.creator = self.request.user
+
+        print(self.kwargs.get("slug"))
+        self.object.group = get_object_or_404(Group, slug=self.kwargs.get("slug"));
         self.object.save()
         return super().form_valid(form)
 #

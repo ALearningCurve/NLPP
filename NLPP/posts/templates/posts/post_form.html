@@ -5,7 +5,9 @@
 {% block post_content %}
 <div class="jumbotron">
 	<h4>Create New Post</h4>
-	<form method="POST" action="{% url 'posts:create' %}" id="postForm">
+
+	<form method="POST" action="{% url 'groups:posts:create' slug=view.kwargs.slug %}" id="postForm">
+
 		{% csrf_token %}
 		{% bootstrap_form form %}
 		{% buttons %}

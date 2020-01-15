@@ -6,7 +6,6 @@ app_name = "posts"
 '''
     path('<slug>/', views.PostList.as_view(), name="all"),
 
-
     # Decide paths for these
     path("by/<username>/",views.UserPosts.as_view(),name="for_user"),
     path("by/<username>/<int:pk>/",views.PostDetail.as_view(),name="single"),

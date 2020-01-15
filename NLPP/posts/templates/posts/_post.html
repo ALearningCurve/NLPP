@@ -1,28 +1,30 @@
-<div class="media">
-	<div class="media-body">
-		<div class="jumbotron">
-
-		<h1>{{ post.name|safe }}</h5>
-		<strong> Creator: {{ post.creator.username }}</strong> <br>
-		<strong> Group name: {{ post.group.name }} </strong>
-		<h5> Description </h5>
-			{{ post.description }}
-		<h5> Reading: </h5>
-			{{ post.body_text }}
-
-		<h5 class="my-5"> Assigned on: {{post.creation_date }}  &nbsp; due on: {{ post.due_date }} </h5>
-	</div class=jumbotron>
-
-		<!--
-		<div class="media-footer">
-			{% if user.is_authenticated and post.user == user and not hide_delete %}
-				<a href="{% url 'posts:delete' pk=post.pk %}" title="delete" class="btn btn-simple">
-					<span class="fa fa-remove text-danger" aria-hidden="true"></span>
-					<span class="text-danger icon-label">Delete</span>
-				</a>
-			{% endif %}
-		</div>
-		#}
-		-->
-	</div>
+<div class="container">
+<div class="jumbotron">
+  <h1 class="display-4">{{post.name}}</h1>
+  <p class="lead"> &emsp; {{post.description}}</p>
+  <hr class=mt-5>
+  <div>
+    Creator <span class="badge badge-secondary mr-2">{{post.creator}}</span>
+    Assigned <span class="badge badge-secondary mr-2">{{post.creation_date}}</span>
+		Due On <span class="badge badge-secondary ">{{post.due_date}}</span>
+  </div>
 </div>
+
+<div class="mx-4">
+<h3 class="display-5">  </h3>
+	{{ post.body_text|safe}}
+</div>
+</div>
+
+
+<!--
+<div class="media-footer">
+	{% if user.is_authenticated and post.user == user and not hide_delete %}
+		<a href="{% url 'posts:delete' pk=post.pk %}" title="delete" class="btn btn-simple">
+			<span class="fa fa-remove text-danger" aria-hidden="true"></span>
+			<span class="text-danger icon-label">Delete</span>
+		</a>
+	{% endif %}
+</div>
+#}
+-->

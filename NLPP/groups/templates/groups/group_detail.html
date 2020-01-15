@@ -40,7 +40,7 @@
   <div class= "container">
   {% for post in group.posts.all %}
   {% if post.creator == group.creator %}
-  <a href="{% url 'posts:single' pk=post.pk %}" class="list-group-item list-group-item-action flex-column align-items-start">
+  <a href="{% url 'groups:posts:single' pk=post.pk slug=group.slug %}" class="list-group-item list-group-item-action flex-column align-items-start">
     <h2 class="mb-2">{{ post.name }}</h2>
     <p class="mt-2"> <em>{{ post.description|safe }} </em></p>
     <div class="d-flex justify-content-start w-40 ">

@@ -24,6 +24,8 @@ urlpatterns = [
     path('', views.HomePage.as_view(), name="home"),
     path('accounts/', include('accounts.urls', namespace="accounts")),
     path('groups/', include('groups.urls', namespace="groups")),
+
+    # This is done in groups, use "groups:posts:path_name" instead
     path('posts/', include("posts.urls", namespace="posts")),
 ]
 

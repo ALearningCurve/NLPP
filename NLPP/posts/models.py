@@ -3,6 +3,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.utils.text import slugify
 
+import misaka
 
 from django.contrib.auth import get_user_model
 from groups.models import Group
@@ -13,7 +14,7 @@ User = get_user_model()
 class Post(models.Model):
     name = models.CharField(max_length=50)
     creator = models.ForeignKey(User, related_name="post_creator", on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, related_name="posts",null=True, blank=True,on_delete=models.CASCADE)    
+    group = models.ForeignKey(Group, related_name="posts",null=True, blank=True,on_delete=models.CASCADE)
 
     description = models.TextField(blank=True, default='', max_length=8000)
     body_text = models.TextField(blank=True, default='', max_length=8000)
@@ -22,13 +23,15 @@ class Post(models.Model):
     creation_date = models.DateTimeField(auto_now=True)
     due_date = models.DateTimeField()
 
-
+    def save(self, *args, **kwargs):
+        self.body_text = misaka.html(self.body_text)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("posts:single", kwargs={"pk": self.pk})
+        return reverse("groups:posts:single", kwargs={"pk": self.pk, 'slug':self.group.slug})
 
 
     class Meta:

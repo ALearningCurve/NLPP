@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 app_name = 'groups'
@@ -13,4 +13,6 @@ urlpatterns = [
     path("leave/<slug>/",views.LeaveGroup.as_view(),name="leave"),
     path("singular/<slug>/kick/<pk>/",views.KickUserGroup.as_view(),name="kick"),
     # path("update/<slug>",views.UpdateGroup.as_view(),name="update"),
+
+    path('<slug>/posts/', include("posts.urls", namespace="posts")),
 ]
