@@ -8,7 +8,7 @@
     <hr class=mt-5>
     <div>
       <button type="button" class="btn btn-secondary" data-toggle="modal"
-        data-target="#MemberList">Member Count <span class="badge badge-secondary">
+        data-target="#MemberList">Members <span class="badge badge-light">
         {{group.members.count}} </span>
       </button> &emsp;
       Join Code <span class="badge badge-secondary"> #{{group.slug}} </span>
@@ -25,8 +25,10 @@
     	{% endif %}
 
       {% if user == group.creator %}
-        <a href="{% url 'groups:delete' slug=group.slug %}" class="btn btn-lg btn-outline-danger"><span class="fa fa-trash"></span>Delete</a>
+        <a href="{% url 'groups:delete' slug=group.slug %}" class="float-right btn btn-lg btn-outline-danger"><span class="fa fa-trash"></span> Delete Group</a>
+        <a href="{% url 'groups:posts:create' slug=view.kwargs.slug %}" class="mx-2 float-right btn btn-lg btn-outline-success"><span class="fa fa-plus"></span> Add a Post</a>
       {% endif %}
+
 
     </div>
   </div>
