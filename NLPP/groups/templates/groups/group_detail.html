@@ -18,18 +18,22 @@
 
 
     <div class="content mt-4">
+      <div class="row">
+      <div class="col">
     	{% if user in group.members.all %}
     		<a href="{% url 'groups:leave' slug=group.slug %}" class="btn btn-lg btn-warning"><span class="fa fa-sign-out"></span> Leave</a>
     	{% else %}
     		<a href="{% url 'groups:join' slug=group.slug %}" class="btn btn-lg btn-success"><span class="fa fa-sign-in"></span> Join</a>
     	{% endif %}
+    </div>
 
       {% if user == group.creator %}
-        <a href="{% url 'groups:delete' slug=group.slug %}" class="float-right btn btn-lg btn-outline-danger"><span class="fa fa-trash"></span> Delete Group</a>
-        <a href="{% url 'groups:posts:create' slug=view.kwargs.slug %}" class="mx-2 float-right btn btn-lg btn-outline-success"><span class="fa fa-plus"></span> Add a Post</a>
+        <div class="col float-right">
+            <a href="{% url 'groups:delete' slug=group.slug %}" class=" btn btn-lg btn-outline-danger my-1"><span class="fa fa-trash"></span> Delete Group</a>
+            <a href="{% url 'groups:posts:create' slug=view.kwargs.slug %}" class="mx-2  btn btn-lg btn-outline-success my-1"><span class="fa fa-plus"></span> Add a Post</a>
+        </div>
       {% endif %}
-
-
+    </div>
     </div>
   </div>
 
