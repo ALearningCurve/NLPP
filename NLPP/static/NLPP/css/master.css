@@ -1,13 +1,19 @@
 
-body 
+body
 {
-  background-color: #FFFFFF; 
-  font-family: Arial, Helvetica, sans-serif; 
+  background-color: #FFFFFF;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
+
+
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+
 }
 
-li.spaced { 
-   margin-bottom: 0.75em;	
+li.spaced {
+   margin-bottom: 0.75em;
 }
 
 a { color: blue; }
@@ -19,7 +25,7 @@ a { color: blue; }
   	margin-left: 0em;
 	margin-bottom: 1.25em;
   	padding: 0em;
-    vertical-align: baseline; 
+    vertical-align: baseline;
 }
 
 .htmlExample
@@ -29,7 +35,7 @@ a { color: blue; }
   	margin-left: 0em;
 	  margin-bottom: 1em;
   	padding: 4px;
-    vertical-align: baseline; 
+    vertical-align: baseline;
 }
 h1 { font-size: 18px }
 
@@ -43,7 +49,3 @@ h1 { font-size: 18px }
 .NavBarCell1Rev { background-color:#00008B;} /* Dark Blue */
 .NavBarFont1    { color:#000000;}
 .NavBarFont1Rev { color:#FFFFFF;}
-
-
-
-
