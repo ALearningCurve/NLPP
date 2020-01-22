@@ -87,26 +87,51 @@ class CreatePost(LoginRequiredMixin, generic.CreateView):
 # https://stackoverflow.com/questions/51106830/how-to-call-python-functions-from-javascript-in-django
 # That link is how we will integrate this function with the translations, or maybe we will use js
 def translate(request):
-    url = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?"
-    key = "dict.1.1.20200122T170248Z.de87d85bf55ff34f.1d5d0127e696c6496ff9250a57595d18c38f5abd"
-    text = "hi"
-    lang = "en-en"
+    url = "https://translate.yandex.net/api/v1.5/tr.json/translate?"
+    key = "trnsl.1.1.20200117T014254Z.b5ec263d36a25c07.698d2465df9fd59677fe87985d82aa6fef88f8af"
+    text = "otras personas piensan que e"
+    lang = "es-es"
 
 
-
-
-    is_cached = ('dict_'+lang+"_"+text in request.session)
+    is_cached = ('translation_'+text in request.session)
 
     if not is_cached:
         url = url + "key="+key+"&text="+text+"&lang="+lang
         response = requests.get(url, verify=False)
-        request.session['dict_'+lang+"_"+text] = response.json()
+        request.session['translation_'+text] = response.json()
 
-    translation = request.session['dict_'+lang+"_"+text]
+    translation = request.session['translation_'+text]
 
 
     return render(request, 'posts/test.html', {
-
         'text': translation,
         'is_cached' : is_cached,
     })
+
+
+
+# provides dictionary translations for words , only works for english to other language, not the other way around
+# def translate(request):
+#     url = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?"
+#     key = "dict.1.1.20200122T170248Z.de87d85bf55ff34f.1d5d0127e696c6496ff9250a57595d18c38f5abd"
+#     text = "hola"
+#     lang = "es-en"
+#
+#
+#
+#
+#     is_cached = ('dict_'+lang+"_"+text in request.session)
+#
+#     if not is_cached:
+#         url = url + "key="+key+"&text="+text+"&lang="+lang
+#         response = requests.get(url, verify=False)
+#         request.session['dict_'+lang+"_"+text] = response.json()
+#
+#     translation = request.session['dict_'+lang+"_"+text]
+#
+#
+#     return render(request, 'posts/test.html', {
+#
+#         'text': translation,
+#         'is_cached' : is_cached,
+#     })
