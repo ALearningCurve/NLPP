@@ -5,7 +5,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.http import Http404
 from django.views import generic
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
+
+
+import requests
 
 from . import forms
 from . import models
@@ -78,3 +81,32 @@ class CreatePost(LoginRequiredMixin, generic.CreateView):
 #     def delete(self, *args, **kwargs):
 #         messages.success(self.request, "Post Deleted")
 #         return super().delete(*args, **kwargs)
+
+
+# this function returns a json file containing the translation
+# https://stackoverflow.com/questions/51106830/how-to-call-python-functions-from-javascript-in-django
+# That link is how we will integrate this function with the translations, or maybe we will use js
+def translate(request):
+    url = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?"
+    key = "dict.1.1.20200122T170248Z.de87d85bf55ff34f.1d5d0127e696c6496ff9250a57595d18c38f5abd"
+    text = "hi"
+    lang = "en-en"
+
+
+
+
+    is_cached = ('dict_'+lang+"_"+text in request.session)
+
+    if not is_cached:
+        url = url + "key="+key+"&text="+text+"&lang="+lang
+        response = requests.get(url, verify=False)
+        request.session['dict_'+lang+"_"+text] = response.json()
+
+    translation = request.session['dict_'+lang+"_"+text]
+
+
+    return render(request, 'posts/test.html', {
+
+        'text': translation,
+        'is_cached' : is_cached,
+    })

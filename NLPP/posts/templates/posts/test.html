@@ -1,0 +1,52 @@
+{% extends "posts/post_base.html" %}
+
+{% block post_content %}
+<!-- <div class="col-md-8"> -->
+    <h1> This is a translation test page </h2>
+      {{ text }}
+
+      <p>This information {{ is_cached|yesno:"was,wasn't" }} cached.</p>
+<!-- </div> -->
+<DicResult>
+  <head/>
+  <def pos="noun" ts="taɪm">
+    <text>time</text>
+    <tr pos="существительное">
+      <text>время</text>
+      <syn>
+        <text>раз</text>
+      </syn>
+      <syn>
+        <text>тайм</text>
+      </syn>
+      <mean>
+        <text>timing</text>
+      </mean>
+      <mean>
+        <text>fold</text>
+      </mean>
+      <mean>
+         <text>half</text>
+      </mean>
+      <ex>
+         <text>prehistoric time</text>
+         <tr>
+            <text>доисторическое время</text>
+         </tr>
+      </ex>
+      <ex>
+         <text>hundredth time</text>
+         <tr>
+            <text>сотый раз</text>
+         </tr>
+      </ex>
+      <ex>
+         <text>time-slot</text>
+         <tr>
+            <text>тайм-слот</text>
+         </tr>
+      </ex>
+    </tr>
+  </def>
+</DicResult>
+{% endblock %}
