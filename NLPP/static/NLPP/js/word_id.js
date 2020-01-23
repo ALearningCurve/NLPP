@@ -1,16 +1,3 @@
-{% extends "base.html" %}
-
-{% block content %}
-<div class="posts-page">
-	<div class="container">
-		{% block prepost %}{% endblock %}
-		{% block post_content %}{% endblock %}
-		{% block post_post %}{% endblock %}
-	</div>
-</div>
-
-
-<script>
 function get_selection() {
     var txt = '';
     if (window.getSelection) {
@@ -45,5 +32,3 @@ function translate_api_call(p_text="hola", p_lang="es-en") {
            }
     });
 }
-</script>
-{% endblock %}

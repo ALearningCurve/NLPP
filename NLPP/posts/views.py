@@ -3,12 +3,13 @@ from django.shortcuts import render
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.views import generic
 from django.shortcuts import get_object_or_404, render
 
 
 import requests
+import json
 
 from . import forms
 from . import models
@@ -89,25 +90,25 @@ class CreatePost(LoginRequiredMixin, generic.CreateView):
 def translate(request):
     url = "https://translate.yandex.net/api/v1.5/tr.json/translate?"
     key = "trnsl.1.1.20200117T014254Z.b5ec263d36a25c07.698d2465df9fd59677fe87985d82aa6fef88f8af"
-    text = "otras personas piensan que e"
-    lang = "es-es"
+    text = request.POST['text']
+    lang = request.POST['lang']
 
 
-    is_cached = ('translation_'+text in request.session)
+
+    is_cached = ('trans_'+lang+"_"+text in request.session)
 
     if not is_cached:
         url = url + "key="+key+"&text="+text+"&lang="+lang
         response = requests.get(url, verify=False)
-        request.session['translation_'+text] = response.json()
+        request.session['trans_'+lang+"_"+text] = response.json()
 
-    translation = request.session['translation_'+text]
+    translation = request.session['trans_'+lang+"_"+text]
 
-
-    return render(request, 'posts/test.html', {
-        'text': translation,
-        'is_cached' : is_cached,
-    })
-
+    # return render(request, 'posts/test.html', {
+    #     'text': translation,
+    #     'is_cached' : is_cached,
+    # })
+    return HttpResponse(json.dumps(translation))
 
 
 # provides dictionary translations for words , only works for english to other language, not the other way around
