@@ -10,4 +10,6 @@ class PostAdmin(admin.ModelAdmin):
         PostMemberInline,
     ]
 
+
 admin.site.register(models.Post, PostAdmin)
+admin.site.register(models.SupportedLanguages)

@@ -23,6 +23,10 @@ class Post(models.Model):
     creation_date = models.DateTimeField(auto_now=True)
     due_date = models.DateTimeField()
 
+    # defualt=2 sets the translation from english to english
+    from_lang = models.ForeignKey('SupportedLanguages', related_name="from_langs", on_delete=models.CASCADE)
+    to_lang = models.ForeignKey('SupportedLanguages', related_name="to_langs", on_delete=models.CASCADE)
+
     def save(self, *args, **kwargs):
         self.body_text = misaka.html(self.body_text)
         super().save(*args, **kwargs)
@@ -52,3 +56,10 @@ class PostMembers(models.Model):
 
     class Meta:
         unique_together = ("post", "user")
+
+class SupportedLanguages(models.Model):
+    code = models.CharField(max_length=5, unique=True)
+    name = models.CharField(max_length=15, unique=True, null=True)
+
+    def __str__(self):
+        return self.name

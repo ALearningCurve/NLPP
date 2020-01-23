@@ -52,7 +52,7 @@ class PostDetail(LoginRequiredMixin, generic.DetailView):
 
 class CreatePost(LoginRequiredMixin, generic.CreateView):
     # form_class = forms.PostForm
-    fields = ("name", "description", "body_text", "due_date")
+    fields = ("name", "description", "body_text", "from_lang","to_lang","due_date")
     model = models.Post
 
 
