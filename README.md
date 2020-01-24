@@ -1,17 +1,20 @@
 # NLPP
 Woooo, you have located the github page!
 
-To use this Python 3 project the following MUST be installed with pip on your computer 
+To use this Python 3 project the following MUST be installed with pip (or pip3) on your computer 
 [use the format pip install package-name]
 
-  	Django                  (The Backend server for site)
+  	Django                  (The backend framework for site)
   	pillow                  (Helps with images)
 	bcrypt                  (Better hashing)
 	django[argon2]		(Better hashing)
-	django- braces          (Better Template Tagging)
+	django-braces           (Better Template Tagging)
 	django-bootstrap4       (Better Styling of Built in Django Forms
  	misaka                  (Allows for easier HTML storage in the database)
 	django-debug-toolbar    (Easier to debug)
+	djangorestframework	(Allows for us to make a custom api)
+	request			(Allows to send an http request from python app)
+	django-clear-cache	(Quickly clears the session without needing settings.py path to be set]
 	
  # Quickstart
  To run the server, navigate into the same level as manage.py and type in the commandline python manage.py runserver
