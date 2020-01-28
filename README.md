@@ -10,11 +10,12 @@ To use this Python 3 project the following MUST be installed with pip (or pip3) 
 	django[argon2]		(Better hashing)
 	django-braces           (Better Template Tagging)
 	django-bootstrap4       (Better Styling of Built in Django Forms
- 	misaka                  (Allows for easier HTML storage in the database)
+ 	misaka                  (Allows for easier HTML storage in the database [such as markdown to html])
 	django-debug-toolbar    (Easier to debug)
 	djangorestframework	(Allows for us to make a custom api)
-	request			(Allows to send an http request from python app)
+	requests		(Allows to send an http request from python app [used for APIs])
 	django-clear-cache	(Quickly clears the session without needing settings.py path to be set]
+	django-bleach 		(Escape HTML, regulate parameters, regulate styles, regulate protocols, etc.) 
 	
  # Quickstart
  To run the server, navigate into the same level as manage.py and type in the commandline python manage.py runserver
