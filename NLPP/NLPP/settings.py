@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'posts.apps.PostsConfig',
 
     'clear_cache',
+    'django_bleach',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +149,29 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 LOGIN_REDIRECT_URL = 'groups:all'
 LOGOUT_REDIRECT_URL = 'home'
+
+
+# Which HTML tags are allowed
+BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a', 'img', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+
+
+# Which HTML attributes are allowed
+BLEACH_ALLOWED_ATTRIBUTES = ['href', 'title', 'style']
+
+# Which CSS properties are allowed in 'style' attributes (assuming style is
+# an allowed attribute)
+BLEACH_ALLOWED_STYLES = [
+    'font-family', 'font-weight', 'text-decoration', 'font-variant'
+]
+
+# Which protocols (and pseudo-protocols) are allowed in 'src' attributes
+# (assuming src is an allowed attribute)
+BLEACH_ALLOWED_PROTOCOLS = [
+    'http', 'https', 'data'
+]
+
+# Strip unknown tags if True, replace with HTML escaped characters if False
+BLEACH_STRIP_TAGS = False
+
+# Strip HTML comments, or leave them in.
+BLEACH_STRIP_COMMENTS = False

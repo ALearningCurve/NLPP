@@ -45,16 +45,18 @@
 {% block group_content %}
   <div class= "container">
   {% for post in group.posts.all %}
-  {% if post.creator == group.creator %}
-  <a href="{% url 'groups:posts:single' pk=post.pk slug=group.slug %}" class="list-group-item list-group-item-action flex-column align-items-start">
-    <h2 class="mb-2">{{ post.name }}</h2>
-    <p class="mt-2"> <em>{{ post.description|safe }} </em></p>
-    <div class="d-flex justify-content-start w-40 ">
-      <span class="text-muted"> Due On <span class="badge badge-secondary">{{ post.due_date }}</span></span>
-      &nbsp;
-      <span class="text-muted ml-3"> Assigned On <span class="badge badge-secondary">{{ post.creation_date }}</span></span>
-    </div>
-  </a>
+  {% if user in group.members.all %}
+  <div class="my-1">
+    <a href="{% url 'groups:posts:single' pk=post.pk slug=group.slug %}" class="list-group-item list-group-item-action flex-column align-items-start">
+      <h2 class="mb-2">{{ post.name }}</h2>
+      <p class="mt-2"> {{ post.description}} </p>
+      <div class="d-flex justify-content-start w-40 ">
+        <span class="text-muted"> Due On <span class="badge badge-secondary">{{ post.due_date }}</span></span>
+        &nbsp;
+        <span class="text-muted ml-3"> Assigned On <span class="badge badge-secondary">{{ post.creation_date }}</span></span>
+      </div>
+    </a>
+  </div>
   {% endif %}
   {% endfor %}
   </div>

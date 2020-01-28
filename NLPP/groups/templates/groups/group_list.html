@@ -21,10 +21,11 @@
 		<h3> Groups I'm In:</h3>
 		{% for group in object_list %}
 		{% if user in group.members.all %}
+		<div class="my-1">
 			<a href="{% url 'groups:single' slug=group.slug %}"
 			class="list-group-item list-group-item-action flex-column align-items-start">
 				<h3 class="mb-1">{{ group.name }}</h3>
-				<p class="mb-1">{{ group.description|safe }}</p>
+				<p class="mb-1">{{ group.description }}</p>
 				<div class="d-flex w-40 justify-content-between">
 					<span class="text-muted"><span class="badge badge-secondary">
 						#{{ group.slug }}</span></span>
@@ -33,6 +34,7 @@
 				<span></span><span></span>
 				</div>
 			</a>
+		</div>
 		{% endif %}
 		{% endfor %}
 	</div>
@@ -43,11 +45,11 @@
 
 		{% for group in object_list %}
 		{% if user == group.creator %}
-
+		<div class="my-1">
 			<a href="{% url 'groups:single' slug=group.slug %}"
 			class="list-group-item list-group-item-action flex-column align-items-start">
 				<h3 class="mb-1">{{ group.name }}</h3>
-				<p class="mb-1">{{ group.description|safe }}</p>
+				<p class="mb-1">{{ group.description }}</p>
 				<div class="d-flex w-40 justify-content-between">
 					<span class="text-muted"><span class="badge badge-secondary">
 						#{{ group.slug }}</span></span>
@@ -56,6 +58,7 @@
 				<span></span><span></span>
 				</div>
 			</a>
+		</div>
 		{% endif %}
 		{% endfor %}
 
