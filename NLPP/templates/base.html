@@ -40,7 +40,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-    <nav class="navbar sticky-top navbar-expand-sm navbar-light bg-light">
+    <nav id="navbar" class="navbar sticky-top navbar-expand-sm navbar-light bg-light">
       <a class="navbar-brand mynav" href="{% url 'home' %}">
         <img src="{% static 'NLPP/icons/favicon.ico' %}">
         NLPP
@@ -78,24 +78,28 @@
 <div class='bg-primary'>
 <footer class="page-footer px-5 pt-4 mt-5">
   <div class="container-fluid  text-center text-md-left">
-    <div class="row">
+    <div class="row footer-dark">
       <div class="col-md-6 mt-md-0 mt-3">
         <h5 class="text-uppercase font-weight-bold">About</h5>
-        <p>This site is built and maintained by the Bromfield Intro to Computer Science class as a project to
-        enrich the language class experience.
-        <ul>
-          <li><strong>Backend and Website —</strong>William Walling-Sotolongo</li>
-          <li><strong>Website Stlying —</strong>Meenu R</li>
-          <li><strong>Andriod App —</strong>Vivien Jamba</li>
-          <li><strong>Swift App —</strong>Dwight Childers & Suan M</li>
-          <li><strong>Other —</strong>Justin Smith and Isaac Noble</li>
-        </ul></p>
+
+          <p> This site is built and maintained by the Bromfield Intro to Computer Science class as a project to
+          enrich the language class experience.
+          <ul>
+            <li><strong>Backend and Website —</strong>William Walling-Sotolongo</li>
+            <li><strong>Website Stlying —</strong>Meenu R</li>
+            <li><strong>Andriod App —</strong>Vivien Jamba</li>
+            <li><strong>Swift App —</strong>Dwight Childers & Suan M</li>
+            <li><strong>Other —</strong>Justin Smith and Isaac Noble</li>
+          </ul></p>
+
       </div>
       <hr class="w-100 d-md-none pb-3">
       <div class="col-md-6 mb-md-0 mb-3">
         <h5 class="text-uppercase font-weight-bold">Learn More</h5>
-        <p>This site is entirly open source on git hub  <a href="https://github.com/ALearningCurve/NLPP"> github.com</a>,
+        <p>This site is entirly open source on git hub  <a href="https://github.com/ALearningCurve/NLPP" class="footer-dark-links"> github.com</a>,
         and any bugs or issues can be described there or by emailing us.</p>
+
+        <h5><a href="#navbar" class="footer-dark-links"><b>Take Me Up!</b></a></h5>
       </div>
     </div>
   </div>

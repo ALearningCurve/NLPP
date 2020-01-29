@@ -49,3 +49,11 @@ a { color: blue; }
 .NavBarCell1Rev { background-color:#00008B;} /* Dark Blue */
 .NavBarFont1    { color:#000000;}
 .NavBarFont1Rev { color:#FFFFFF;}
+
+.footer-dark {
+  color:white;
+}
+
+.footer-dark-links {
+  color:orange;
+}
