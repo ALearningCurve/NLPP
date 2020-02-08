@@ -3,6 +3,31 @@
 {% block post_content %}
     {% include "posts/_post.html" %}
 
+  <!-- This is the modal that will pop up on double click -->
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary"  data-target="#translateModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="translateModal" tabindex="-1" role="dialog" aria-labelledby="translateModalTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title h3" id="translateModalTitle">Word Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="api-filler" class="modal-body">
+        Oh Uh, Something Went Wrong!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 function get_selection() {
@@ -36,7 +61,19 @@ function translate_api_call(p_text="error", p_lang="es-en") {
             lang: p_lang,
               },
         success:  function(response){
-               alert(response);
+
+               var translation_text = "<p> <span class='lead'>Translated Text: </span>" +  response["text"] + "</p>";
+
+               translation_text += '<p>View on the translator for more translations and translators</p>';
+
+               translation_text += "<p class='my-1'><a class='mx-4' target='_blank' href='https://translate.yandex.com/?lang="+p_lang+"&text="+p_text+"'>Yandex (Gives Synomyns + Translations!)</a></p>";
+               translation_text += "<p class='my-1'><a class='mx-4' target='_blank' href='https://translate.google.com/?q="+p_text+"&sl={{post.to_lang.code}}+&tl={{post.to_lang}}'>Google Translate</a></p>";
+
+
+
+
+               $("#api-filler").html(translation_text);
+               $('#translateModal').modal('toggle');
            }
     });
 }

@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.views import generic
 from django.shortcuts import get_object_or_404, render
 
@@ -108,7 +108,8 @@ def translate(request):
     #     'text': translation,
     #     'is_cached' : is_cached,
     # })
-    return HttpResponse(json.dumps(translation))
+
+    return JsonResponse(translation)
 
 
 # provides dictionary translations for words , only works for english to other language, not the other way around
