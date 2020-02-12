@@ -16,6 +16,10 @@
 		{% buttons %}
 			<button type="submit" class="btn btn-primary btn-large">Post</button>
 		{% endbuttons %}
+		def del_post(request, key):
+    		post = Post.objects.get(pk=key)
+    		post.delete()
+   		return render(request, 'del_done.html')
 	</form>
 	{% endif %}
 </div>
