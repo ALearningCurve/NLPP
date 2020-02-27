@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from . import views
+from posts import views as posts_views
 
 
 urlpatterns = [
@@ -25,8 +26,10 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace="accounts")),
     path('groups/', include('groups.urls', namespace="groups")),
 
-    # This is done in groups, use "groups:posts:path_name" instead
-    path('posts/', include("posts.urls", namespace="posts")),
+    # Login for the rest frameworks
+    path('api-auth/', include('rest_framework.urls')),
+
+    path('translate/', posts_views.translate, name="translate"),
 ]
 
 if settings.DEBUG:

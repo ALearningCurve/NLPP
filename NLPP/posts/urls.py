@@ -15,7 +15,4 @@ app_name = "posts"
 urlpatterns = [
     path("new/", views.CreatePost.as_view(), name="create"),
     path("<int:pk>/",views.PostDetail.as_view(),name="single"),
-
-    # This is a temporary view, delete it later
-    path('translate/', views.translate, name='translate'),
 ]

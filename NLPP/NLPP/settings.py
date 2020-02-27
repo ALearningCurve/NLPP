@@ -53,6 +53,7 @@ INSTALLED_APPS = [
 
     'clear_cache',
     'django_bleach',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

@@ -124,6 +124,8 @@ def group_find(request):
 
     return render(request,'groups/group_find_form.html',{'form':form, 'valid':True})
 
+
+
 ###########
 # Views Restricted to the original owner
 ###########
