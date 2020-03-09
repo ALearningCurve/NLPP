@@ -4,7 +4,10 @@ import textract
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 
-filename = 'enter the name of the file here'
+#where I got if from
+#https://medium.com/@rqaiserr/how-to-convert-pdfs-into-searchable-key-words-with-python-85aab86c544f
+
+filename = 'pdfToScan'
 
 #open allows you to read the file
 pdfFileObj = open(filename,'rb')
@@ -35,12 +38,10 @@ if text != "":
 
 #If the above returns as False, we run the OCR library textract to #convert scanned/image based PDF files into text
 else:
-   text = textract.process(fileurl, method='tesseract', language='eng')
-
+   text = textract.process(filename, method='tesseract', language='eng')
 
 # Now we have a text variable which contains all the text derived #from our PDF file. Type print(text) to see what it contains. It #likely contains a lot of spaces, possibly junk such as '\n' etc.
 # Now, we will clean our text variable, and return it as a list of keywords.
-Step 3: Convert text into keywords
 
 
 #The word_tokenize() function will break our text phrases into #individual words
