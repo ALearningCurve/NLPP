@@ -35,20 +35,28 @@
         </button>
       </div>
       <div class="modal-body">
-			<form name = "form" enctype = "multipart/form-data" target="_blank" action = "{% url 'groups:posts:upload' slug=view.kwargs.slug %}" method = "POST">{% csrf_token %}
+			<form name = "form" enctype = "multipart/form-data" target="hidden-iframe" action = "{% url 'groups:posts:upload' slug=view.kwargs.slug %}" method = "POST">{% csrf_token %}
 				 <div class="custom-file my-2">
 					 <input type="file" class="custom-file-input" id="customFile" name="file" required>
 					 <label class="custom-file-label" for="customFile">Choose file</label>
 				 </div>
-         <button type="submit" class='btn btn-secondary' value="Login" > Upload</button>
+         <button type="submit" class='btn btn-secondary' value="Login" > Upload and Extract</button>
 			</form>
+
+			<small><a href="https://pdftoimage.com/" target="_blank">PDF needs to be converted to an image format if not made on a computer</a></small>
+			<div id="extract-iframe" class = "my-4 embed-responsive embed-responsive-16by9">
+				<!-- style="width:0; height:0; border:0; border:none" -->
+				<iframe class="embed-responsive-item" name="hidden-iframe" style=""></iframe>
+			</div>
 
 
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<!--
         <button type="button" id="uploaded-attempt" class="btn btn-primary" data-dismiss="modal">Attempt Upload</button>
+			-->
       </div>
 
     </div>

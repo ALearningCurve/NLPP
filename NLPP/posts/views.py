@@ -146,6 +146,9 @@ def translate(request):
 from django.conf import settings
 from . import textExtractor as out
 from django.http import HttpResponse
+from django.views.decorators.clickjacking import xframe_options_sameorigin
+
+@xframe_options_sameorigin
 def file_upload(request, slug):
     print("VARIABLE TEST"+settings.MEDIA_ROOT)
     # save_path = os.path.join(settings.MEDIA_ROOT, 'uploads', request.FILES['file'])
