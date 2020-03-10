@@ -15,8 +15,9 @@ def PDFConverter(file, lang="english"):
     import PyPDF2
     import textract
 
+    filename = 'name of file'
     #open allows you to read the file
-    pdfFileObj = file
+    pdfFileObj = open(filename, 'rb')
     #The pdfReader variable is a readable object that will be parsed
     pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
     #discerning the number of pages will allow us to parse through all #the pages
@@ -33,7 +34,7 @@ def PDFConverter(file, lang="english"):
        text = text
     #If the above returns as False, we run the OCR library textract to #convert scanned/image based PDF files into text
     else:
-       text = textract.process(fileurl, method='tesseract')
+       text = textract.process(filename, method='tesseract', language=  'eng')
     # Now we have a text variable which contains all the text derived #from our PDF file. Type print(text) to see what it contains. It #likely contains a lot of spaces, possibly junk such as '\n' etc.
     # Now, we will clean our text variable, and return it as a list of keywords.
     #The word_tokenize() function will break our text phrases into #individual words
