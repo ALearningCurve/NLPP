@@ -13,14 +13,59 @@
 
 		{% csrf_token %}
 		{% bootstrap_form form %}
+			<small><em>dates must be in the 'year-month-day hr:min:sec' format</em></small>
 		{% buttons %}
 			<button type="submit" class="btn btn-primary btn-large">Post</button>
 		{% endbuttons %}
-		def del_post(request, key):
-    		post = Post.objects.get(pk=key)
-    		post.delete()
-   		return render(request, 'del_done.html')
 	</form>
+
+	<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Upload a PDF or PNG
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">PDF/PNG Upload</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+			<form name = "form" enctype = "multipart/form-data" target="_blank" action = "{% url 'groups:posts:upload' slug=view.kwargs.slug %}" method = "POST">{% csrf_token %}
+				 <div class="custom-file my-2">
+					 <input type="file" class="custom-file-input" id="customFile" name="file" required>
+					 <label class="custom-file-label" for="customFile">Choose file</label>
+				 </div>
+         <button type="submit" class='btn btn-secondary' value="Login" > Upload</button>
+			</form>
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" id="uploaded-attempt" class="btn btn-primary" data-dismiss="modal">Attempt Upload</button>
+      </div>
+
+    </div>
+  </div>
+	<script>
+		// Add the following code if you want the name of the file appear on select
+		$(".custom-file-input").on("change", function() {
+		  var fileName = $(this).val().split("\\").pop();
+		  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+		});
+
+		$("#uploaded-attempt").on("click", function() {
+			  console.log("clicked");
+		});
+	</script>
+</div>
 	{% endif %}
 </div>
+
 {% endblock %}

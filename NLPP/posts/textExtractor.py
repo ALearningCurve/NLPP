@@ -9,14 +9,14 @@ use convertToText with given file path to find the file
 #     ssl._create_default_https_context = ssl._create_unverified_context
 # https://medium.com/@rqaiserr/how-to-convert-pdfs-into-searchable-key-words-with-python-85aab86c544f
 # Credit for the below function above
-def PDFConverter(lang, filename):
+def PDFConverter(file, lang="english"):
     from nltk.tokenize import word_tokenize
     from nltk.corpus import stopwords
     import PyPDF2
     import textract
 
     #open allows you to read the file
-    pdfFileObj = open(filename,'rb')
+    pdfFileObj = file
     #The pdfReader variable is a readable object that will be parsed
     pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
     #discerning the number of pages will allow us to parse through all #the pages
@@ -60,19 +60,17 @@ def imageToText(filename, lang="eng"):
     return text
 
 def convertToText(filename, lang):
-    extension = filename[filename.index(".")+1:]
-    text = "[WARNING] Text extraction is not 100% accurate, please review what was generated\n"
+    extension = filename.name[filename.name.rindex(".")+1:]
+    text = "<center>[WARNING] Text extraction is not 100% accurate, please review what was generated</center><br>"
+    supported_images = ["bmp", "pnm", "png", "jfif", "jpeg", "jpg"]
     try:
         if (extension == "pdf"):
-            text += PDFConverter(lang,filename)
-        elif (extension == "png"):
-            text += imageToText(filename, lang="english")
+            text += PDFConverter(filename, lang)
+        elif (extension in supported_images):
+            text += imageToText(filename, lang)
         else:
-            text = "[ERROR]: Unsupported File Type"
+            text = "[ERROR]: Unsupported File Type \"" + extension + "\""
     except FileNotFoundError:
-        text = "[ERROR]: File not found"
+        text = "[ERROR]: Server file error"
 
     return text
-
-#print(convertToText("media/posts/temp/sample.pdf", "english"))
-#print(convertToText("media/posts/temp/pdf_sample.pdf", "english"))
