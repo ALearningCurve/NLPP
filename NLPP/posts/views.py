@@ -6,10 +6,12 @@ from django.urls import reverse_lazy
 from django.http import Http404, HttpResponse, JsonResponse
 from django.views import generic
 from django.shortcuts import get_object_or_404, render
-
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 
 import requests
 import json
+import os
 
 from . import forms
 from . import models
@@ -137,3 +139,16 @@ def translate(request):
 #         'text': translation,
 #         'is_cached' : is_cached,
 #     })
+
+
+
+
+from django.conf import settings
+from . import textExtractor as out
+from django.http import HttpResponse
+def file_upload(request, slug):
+    print("VARIABLE TEST"+settings.MEDIA_ROOT)
+    # save_path = os.path.join(settings.MEDIA_ROOT, 'uploads', request.FILES['file'])
+    # path = default_storage.save(save_path, request.FILES['file'])
+    # return default_storage.path(path)
+    return HttpResponse(out.convertToText(request.FILES['file'],"english"))
