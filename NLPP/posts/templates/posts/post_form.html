@@ -35,47 +35,16 @@
         </button>
       </div>
       <div class="modal-body">
-        Upload the file
-				<!--
-				<form>
-				  <div class="custom-file">
-				    <input type="file" class="custom-file-input" id="customFile">
-				    <label class="custom-file-label" for="customFile">Choose file</label>
-				  </div>
-				</form>
-			-->
+			<form name = "form" enctype = "multipart/form-data" target="_blank" action = "{% url 'groups:posts:upload' slug=view.kwargs.slug %}" method = "POST">{% csrf_token %}
+				 <div class="custom-file my-2">
+					 <input type="file" class="custom-file-input" id="customFile" name="file" required>
+					 <label class="custom-file-label" for="customFile">Choose file</label>
+				 </div>
+         <button type="submit" class='btn btn-secondary' value="Login" > Upload</button>
+			</form>
 
-			<form name = "form" enctype = "multipart/form-data" action = "{% url 'groups:posts:upload' slug=view.kwargs.slug %}" method = "POST" >{% csrf_token %}
 
-	         <div style = "max-width:470px;">
-	            <center>
-	               <input type = "text" style = "margin-left:20%;" placeholder = "Name" name = "name" />
-	            </center>
-	         </div>
 
-	         <br>
-
-	         <div style = "max-width:470px;">
-	            <center>
-	               <input type = "file" style = "margin-left:20%;"
-	                  placeholder = "file" name = "file" />
-	            </center>
-	         </div>
-
-	         <br>
-
-	         <div style = "max-width:470px;">
-	            <center>
-
-	               <button style = "border:0px;background-color:#4285F4; margin-top:8%;
-	                  height:35px; width:80%; margin-left:19%;" type = "submit" value = "Login" >
-	                  <strong>Login</strong>
-	               </button>
-
-	            </center>
-	         </div>
-				 </form>
-			<!-- -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

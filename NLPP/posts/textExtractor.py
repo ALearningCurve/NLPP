@@ -62,10 +62,11 @@ def imageToText(filename, lang="eng"):
 def convertToText(filename, lang):
     extension = filename.name[filename.name.rindex(".")+1:]
     text = "<center>[WARNING] Text extraction is not 100% accurate, please review what was generated</center><br>"
+    supported_images = ["bmp", "pnm", "png", "jfif", "jpeg", "jpg"]
     try:
         if (extension == "pdf"):
             text += PDFConverter(filename, lang)
-        elif (extension == "png"):
+        elif (extension in supported_images):
             text += imageToText(filename, lang)
         else:
             text = "[ERROR]: Unsupported File Type \"" + extension + "\""
