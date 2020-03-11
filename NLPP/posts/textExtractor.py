@@ -2,6 +2,21 @@
 Takes text from pdf or other formats and returns the text as a string
 use convertToText with given file path to find the file
 """
+# PDF Libraries
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+import PyPDF2
+import textract
+
+# Image OCR
+try:
+    from PIL import Image
+except ImportError:
+    import Image
+import pytesseract
+
+# DOCX Libraries
+import mammoth
 
 # Resolve Certificate errors with nltk module
 # import os, ssl
@@ -10,11 +25,6 @@ use convertToText with given file path to find the file
 # https://medium.com/@rqaiserr/how-to-convert-pdfs-into-searchable-key-words-with-python-85aab86c544f
 # Credit for the below function above
 def PDFConverter(pdfFileObj, lang="english"):
-    from nltk.tokenize import word_tokenize
-    from nltk.corpus import stopwords
-    import PyPDF2
-    import textract
-    
     #The pdfReader variable is a readable object that will be parsed
     pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
     #discerning the number of pages will allow us to parse through all #the pages
@@ -44,14 +54,13 @@ def PDFConverter(pdfFileObj, lang="english"):
 # Credit to https://medium.com/@MicroPyramid/extract-text-with-ocr-for-all-image-types-in-python-using-pytesseract-ec3c53e5fc3a
 # for this image to text code
 def imageToText(filename, lang="eng"):
-    try:
-        from PIL import Image
-    except ImportError:
-        import Image
-    import pytesseract
-
     text = pytesseract.image_to_string(Image.open(filename))  # We'll use Pillow's Image class to open the image and pytesseract to detect the string in the image
     return text
+
+# Function to convert a word document (.docx) to html
+def docxToText(file):
+    print(mammoth.convert_to_html(file).value)
+    return mammoth.convert_to_html(file).value
 
 def convertToText(filename, lang):
     extension = filename.name[filename.name.rindex(".")+1:]
@@ -60,11 +69,13 @@ def convertToText(filename, lang):
     try:
         if (extension == "pdf"):
             text += PDFConverter(filename, lang)
+        elif (extension == "docx"):
+            text += docxToText(filename)
         elif (extension in supported_images):
             text += imageToText(filename, lang)
         else:
             text = "[ERROR]: Unsupported File Type \"" + extension + "\"<br>"
-            text += "Supported Files: PDF, " + ", ".join(supported_images) + "<br>"
+            text += "Supported Files: PDF, DOCX (Microsoft Word documents)" + ", ".join(supported_images) + "<br>"
     except FileNotFoundError:
         text = "[ERROR]: Server file error"
 

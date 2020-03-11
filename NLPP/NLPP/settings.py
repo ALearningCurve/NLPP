@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'clear_cache',
     'django_bleach',
     'rest_framework',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -157,7 +158,10 @@ LOGOUT_REDIRECT_URL = 'home'
 
 
 # Which HTML tags are allowed
-BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a', 'img', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
+BLEACH_ALLOWED_TAGS = [
+    'p', 'b', 'i', 'u', 'em', 'strong', 'a', 'img', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'tr',
+    'table', 'th', 'center',
+]
 
 
 # Which HTML attributes are allowed
