@@ -46,7 +46,8 @@ def PDFConverter(file, lang="english"):
     #We create a list comprehension which only returns a list of words #that are NOT IN stop_words and NOT IN punctuations.
     #keywords = [word for word in tokens if not word in stop_words and not word in punctuations]
     # Use tokens instead of keywords instead if want no repitition
-    return(' '.join(tokens))
+    return text
+    #return(' '.join(tokens))
 
 # Credit to https://medium.com/@MicroPyramid/extract-text-with-ocr-for-all-image-types-in-python-using-pytesseract-ec3c53e5fc3a
 # for this image to text code
@@ -70,7 +71,8 @@ def convertToText(filename, lang):
         elif (extension in supported_images):
             text += imageToText(filename, lang)
         else:
-            text = "[ERROR]: Unsupported File Type \"" + extension + "\""
+            text = "[ERROR]: Unsupported File Type \"" + extension + "\"<br>"
+            text += "Supported Files: PDF, " + ", ".join(supported_images) + "<br>"
     except FileNotFoundError:
         text = "[ERROR]: Server file error"
 
