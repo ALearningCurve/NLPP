@@ -150,8 +150,4 @@ from django.views.decorators.clickjacking import xframe_options_sameorigin
 
 @xframe_options_sameorigin
 def file_upload(request, slug):
-    print("VARIABLE TEST"+settings.MEDIA_ROOT)
-    # save_path = os.path.join(settings.MEDIA_ROOT, 'uploads', request.FILES['file'])
-    # path = default_storage.save(save_path, request.FILES['file'])
-    # return default_storage.path(path)
     return HttpResponse(out.convertToText(request.FILES['file'],"english"))
