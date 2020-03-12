@@ -3,7 +3,7 @@ argon2-cffi==19.2.0
 asgiref==3.2.3
 bcrypt==3.1.7
 beautifulsoup4==4.8.0
-bleach==3.1.0
+bleach==3.1.1
 bootstrap4==0.1.0
 certifi==2019.11.28
 cffi==1.13.2
