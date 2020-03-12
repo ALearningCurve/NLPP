@@ -8,4 +8,4 @@ class PostForm(forms.ModelForm):
         model = models.Post
 
     def __init__(self, *args, **kwargs):
-        pass
+        model = models.Post
