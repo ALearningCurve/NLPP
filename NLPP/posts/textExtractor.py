@@ -2,21 +2,6 @@
 Takes text from pdf or other formats and returns the text as a string
 use convertToText with given file path to find the file
 """
-# PDF Libraries
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-import PyPDF2
-import textract
-
-# Image OCR
-try:
-    from PIL import Image
-except ImportError:
-    import Image
-import pytesseract
-
-# DOCX Libraries
-import mammoth
 
 # Resolve Certificate errors with nltk module
 # import os, ssl
@@ -24,7 +9,15 @@ import mammoth
 #     ssl._create_default_https_context = ssl._create_unverified_context
 # https://medium.com/@rqaiserr/how-to-convert-pdfs-into-searchable-key-words-with-python-85aab86c544f
 # Credit for the below function above
-def PDFConverter(pdfFileObj, lang="english"):
+def PDFConverter(file, lang="english"):
+    from nltk.tokenize import word_tokenize
+    from nltk.corpus import stopwords
+    import PyPDF2
+    import textract
+
+    filename = 'name of file'
+    #open allows you to read the file
+    pdfFileObj = open(filename, 'rb')
     #The pdfReader variable is a readable object that will be parsed
     pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
     #discerning the number of pages will allow us to parse through all #the pages
@@ -36,7 +29,12 @@ def PDFConverter(pdfFileObj, lang="english"):
         pageObj = pdfReader.getPage(count)
         count +=1
         text += pageObj.extractText()
-
+    #This if statement exists to check if the above library returned #words. It's done because PyPDF2 cannot read scanned files.
+    if text != "":
+       text = text
+    #If the above returns as False, we run the OCR library textract to #convert scanned/image based PDF files into text
+    else:
+       text = textract.process(filename, method='tesseract', language=  'eng')
     # Now we have a text variable which contains all the text derived #from our PDF file. Type print(text) to see what it contains. It #likely contains a lot of spaces, possibly junk such as '\n' etc.
     # Now, we will clean our text variable, and return it as a list of keywords.
     #The word_tokenize() function will break our text phrases into #individual words
@@ -54,13 +52,14 @@ def PDFConverter(pdfFileObj, lang="english"):
 # Credit to https://medium.com/@MicroPyramid/extract-text-with-ocr-for-all-image-types-in-python-using-pytesseract-ec3c53e5fc3a
 # for this image to text code
 def imageToText(filename, lang="eng"):
+    try:
+        from PIL import Image
+    except ImportError:
+        import Image
+    import pytesseract
+
     text = pytesseract.image_to_string(Image.open(filename))  # We'll use Pillow's Image class to open the image and pytesseract to detect the string in the image
     return text
-
-# Function to convert a word document (.docx) to html
-def docxToText(file):
-    print(mammoth.convert_to_html(file).value)
-    return mammoth.convert_to_html(file).value
 
 def convertToText(filename, lang):
     extension = filename.name[filename.name.rindex(".")+1:].lower()

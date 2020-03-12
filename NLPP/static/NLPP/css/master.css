@@ -6,7 +6,8 @@ html {
 body
 {
   background-color: #FFFFFF;
-  font-size: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
   height:100%;
 
   overflow-wrap: break-word;
@@ -68,8 +69,4 @@ a { color: blue; }
 
 .content {
   flex: 1 0 auto;
-}
-
-#post_body_text_base {
-  font-size: 1.5rem;
 }

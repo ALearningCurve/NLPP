@@ -5,7 +5,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.http import Http404, HttpResponse, JsonResponse
 from django.views import generic
-from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.shortcuts import get_object_or_404, render
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -16,11 +15,8 @@ import os
 
 from . import forms
 from . import models
-from . import textExtractor as out
 
 from groups.models import Group
-
-
 
 # from django.contrib.auth import get_user_model
 # User = get_user_model()
@@ -145,6 +141,17 @@ def translate(request):
 #     })
 
 
+
+
+from django.conf import settings
+from . import textExtractor as out
+from django.http import HttpResponse
+from django.views.decorators.clickjacking import xframe_options_sameorigin
+
 @xframe_options_sameorigin
 def file_upload(request, slug):
+    print("VARIABLE TEST"+settings.MEDIA_ROOT)
+    # save_path = os.path.join(settings.MEDIA_ROOT, 'uploads', request.FILES['file'])
+    # path = default_storage.save(save_path, request.FILES['file'])
+    # return default_storage.path(path)
     return HttpResponse(out.convertToText(request.FILES['file'],"english"))

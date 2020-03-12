@@ -2,27 +2,11 @@
 
 {% load bootstrap4 %}
 
-{% block head %}
-	<script src="https://cdn.tiny.cloud/1/t4nroneyntski1jx8k47lor4yklbaodhbpfuxwdr1yx3nl8x/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-	<script>tinymce.init({
-		selector:'#id_body_text',
-		plugins: 'lists checklist code table advtable',
-		convert_fonts_to_spans : true,
-		element_format : 'html',
-		forced_root_block : 'p'
-	});
-	</script>
-{% endblock%}
 {% block post_content %}
-
 
 <!-- This makes sure that the slug in the url has a group created by the user
 		so that the posts can only be added by the user who made the group    -->
-
-
-
 {% if view.get_user_groups %}
-
 <div class="jumbotron">
 	<h4>Create New Post</h4>
 	<form method="POST" action="{% url 'groups:posts:create' slug=view.kwargs.slug %}" id="postForm">
@@ -37,7 +21,7 @@
 
 	<!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Text Upload and Extraction
+  Upload a PDF or PNG
 </button>
 
 <!-- Modal -->
@@ -45,13 +29,13 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Text Upload and Extraction</h5>
+        <h5 class="modal-title" id="exampleModalLabel">PDF/PNG Upload</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-			<form name = "form" enctype = "multipart/form-data" target="extracted-text-iframe" action = "{% url 'groups:posts:upload' slug=view.kwargs.slug %}" method = "POST">{% csrf_token %}
+			<form name = "form" enctype = "multipart/form-data" target="hidden-iframe" action = "{% url 'groups:posts:upload' slug=view.kwargs.slug %}" method = "POST">{% csrf_token %}
 				 <div class="custom-file my-2">
 					 <input type="file" class="custom-file-input" id="customFile" name="file" required>
 					 <label class="custom-file-label" for="customFile">Choose file</label>
@@ -61,7 +45,8 @@
 
 			<small><a href="https://pdftoimage.com/" target="_blank">PDF needs to be converted to an image format if not made on a computer</a></small>
 			<div id="extract-iframe" class = "my-4 embed-responsive embed-responsive-16by9">
-				<iframe class="embed-responsive-item" name="extracted-text-iframe" style=""></iframe>
+				<!-- style="width:0; height:0; border:0; border:none" -->
+				<iframe class="embed-responsive-item" name="hidden-iframe" style=""></iframe>
 			</div>
 
 
@@ -81,6 +66,10 @@
 		$(".custom-file-input").on("change", function() {
 		  var fileName = $(this).val().split("\\").pop();
 		  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+		});
+
+		$("#uploaded-attempt").on("click", function() {
+			  console.log("clicked");
 		});
 	</script>
 </div>
