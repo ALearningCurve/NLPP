@@ -4,9 +4,11 @@
 
 {% block post_content %}
 
+
 <!-- This makes sure that the slug in the url has a group created by the user
 		so that the posts can only be added by the user who made the group    -->
 {% if view.get_user_groups %}
+{{ form.media }}
 <div class="jumbotron">
 	<h4>Create New Post</h4>
 	<form method="POST" action="{% url 'groups:posts:create' slug=view.kwargs.slug %}" id="postForm">
