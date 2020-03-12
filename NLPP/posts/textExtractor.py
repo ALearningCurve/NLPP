@@ -63,19 +63,19 @@ def docxToText(file):
     return mammoth.convert_to_html(file).value
 
 def convertToText(filename, lang):
-    extension = filename.name[filename.name.rindex(".")+1:]
+    extension = filename.name[filename.name.rindex(".")+1:].lower()
     text = "<center>[WARNING] Text extraction is not 100% accurate, please review what was generated</center><br>"
     supported_images = ["bmp", "pnm", "png", "jfif", "jpeg", "jpg"]
     try:
         if (extension == "pdf"):
             text += PDFConverter(filename, lang)
-        elif (extension == "docx"):
+        elif (extension == "docx" or extension == "doc"):
             text += docxToText(filename)
         elif (extension in supported_images):
             text += imageToText(filename, lang)
         else:
             text = "[ERROR]: Unsupported File Type \"" + extension + "\"<br>"
-            text += "Supported Files: PDF, DOCX (Microsoft Word documents)" + ", ".join(supported_images) + "<br>"
+            text += "Supported Files: PDF, DOCX, DOC (Microsoft Word documents)" + ", ".join(supported_images) + "<br>"
     except FileNotFoundError:
         text = "[ERROR]: Server file error"
 
