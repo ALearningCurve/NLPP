@@ -1,6 +1,5 @@
 from django import forms
 from . import models
-from tinymce.widgets import TinyMCE
 
 
 class PostForm(forms.ModelForm):

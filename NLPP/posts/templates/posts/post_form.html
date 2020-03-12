@@ -7,6 +7,9 @@
 	<script>tinymce.init({
 		selector:'#id_body_text',
 		plugins: 'lists checklist code table advtable',
+		convert_fonts_to_spans : true,
+		element_format : 'html',
+		forced_root_block : 'p'
 	});
 	</script>
 {% endblock%}

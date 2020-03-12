@@ -4,7 +4,6 @@ from django.urls import reverse
 from django.utils.text import slugify
 
 import misaka
-from tinymce.models import HTMLField
 
 from django.contrib.auth import get_user_model
 from groups.models import Group
@@ -19,7 +18,6 @@ class Post(models.Model):
 
     description = models.TextField(blank=True, default='', max_length=8000)
     body_text = models.TextField(blank=True, default='', max_length=8000)
-    #body_text = HTMLField()
 
     users = models.ManyToManyField(User,through="PostMembers")
     creation_date = models.DateTimeField(auto_now=True)

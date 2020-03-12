@@ -29,7 +29,6 @@ urlpatterns = [
 
     # Login for the rest frameworks
     path('api-auth/', include('rest_framework.urls')),
-    path('tinymce/', include('tinymce.urls')),
 
     path('translate/', posts_views.translate, name="translate"),
 
