@@ -18,8 +18,8 @@ class Post(models.Model):
     group = models.ForeignKey(Group, related_name="posts",null=True, blank=True,on_delete=models.CASCADE)
 
     description = models.TextField(blank=True, default='', max_length=8000)
-    #body_text = models.TextField(blank=True, default='', max_length=8000)
-    body_text = HTMLField()
+    body_text = models.TextField(blank=True, default='', max_length=8000)
+    #body_text = HTMLField()
 
     users = models.ManyToManyField(User,through="PostMembers")
     creation_date = models.DateTimeField(auto_now=True)
