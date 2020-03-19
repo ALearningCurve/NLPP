@@ -17,4 +17,5 @@ urlpatterns = [
     path("<int:pk>/",views.PostDetail.as_view(),name="single"),
     path("textExtractor/", views.file_upload, name="upload"),
     path("<int:pk>/delete/", views.DeletePost.as_view(), name="delete"),
+    path("<int:pk>/update/", views.UpdatePost.as_view(), name="update"),
 ]

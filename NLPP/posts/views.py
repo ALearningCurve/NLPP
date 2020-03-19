@@ -42,9 +42,24 @@ class CreatePost(LoginRequiredMixin, generic.CreateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-
         self.object.creator = self.request.user
+        self.object.group = get_object_or_404(Group, slug=self.kwargs.get("slug"))
+        self.object.save()
+        return super().form_valid(form)
 
+class UpdatePost(LoginRequiredMixin, generic.UpdateView):
+    # form_class = forms.PostForm
+    fields = ("name", "description", "body_text", "from_lang","to_lang","due_date")
+    model = models.Post
+
+
+    def get_user_groups(self):
+        return get_object_or_404(Group, slug=self.kwargs.get("slug"), creator=self.request.user)
+
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.creator = self.request.user
         self.object.group = get_object_or_404(Group, slug=self.kwargs.get("slug"))
         self.object.save()
         return super().form_valid(form)
@@ -53,15 +68,8 @@ class CreatePost(LoginRequiredMixin, generic.CreateView):
 class DeletePost(LoginRequiredMixin, generic.DeleteView):
     model = models.Post
 
-    # 'groups:posts:create' slug=view.kwargs.slug
-    #slug = get_context_data(**kwargs)
-    #success_url = reverse_lazy("groups:single")
-
     def get_success_url(self):
         return reverse_lazy("groups:single", kwargs={'slug': self.object.group.slug})
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     return queryset.filter(user_id=self.request.user.id)
 
     def delete(self, *args, **kwargs):
         return super().delete(*args, **kwargs)

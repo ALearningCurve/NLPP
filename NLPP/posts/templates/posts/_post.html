@@ -15,6 +15,7 @@
   {% if user == post.creator %}
     <div class="col float-right">
         <a href="{% url 'groups:posts:delete' slug=view.kwargs.slug pk=view.kwargs.pk %}" class=" btn btn-lg btn-outline-danger my-1"><span class="fa fa-trash"></span> Delete Post</a>
+        <a href="{% url 'groups:posts:update' slug=view.kwargs.slug pk=view.kwargs.pk %}" class=" btn btn-lg btn-outline-danger my-1"><span class="fa fa-trash"></span> Update Post</a>
 
     </div>
   {% endif %}
