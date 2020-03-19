@@ -1,16 +1,16 @@
 {% extends "groups/group_base.html" %}
 {% block content %}
-  {% if user == object.creator %}
+{% if user == object.creator %}
   <form class="jumbotron" method="post">
     {% csrf_token %}
-    <h1 class="display-4"> Delete My Group </h1>
+    <h1 class="display-4"> Delete My Post </h1>
     <hr class="my-4">
     <p>Are you sure you want to delete "{{ object }}"?</p>
     <input class='btn btn-danger' type="submit" value="Confirm" />
-    <a class='btn btn-primary my-4'href="{% url 'groups:single' slug=object.slug %} ">Cancel</a>
+    <a class='btn btn-primary my-4'href="{% url 'groups:posts:single' slug=object.group.slug pk=object.pk %} ">Cancel</a>
 
   </form>
-  {% else %}
-  <p> You do not have permissions to this page.</p>
-  {% endif %}
+{% else %}
+<p>You do not have permission to view this page</p>
+{% endif %}
 {% endblock %}

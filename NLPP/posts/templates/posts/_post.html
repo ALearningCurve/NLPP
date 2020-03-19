@@ -12,6 +12,12 @@
     Assigned <span class="badge badge-secondary mr-2">{{post.creation_date}}</span>
 		Due On <span class="badge badge-secondary ">{{post.due_date}}</span>
   </div>
+  {% if user == post.creator %}
+    <div class="col float-right">
+        <a href="{% url 'groups:posts:delete' slug=view.kwargs.slug pk=view.kwargs.pk %}" class=" btn btn-lg btn-outline-danger my-1"><span class="fa fa-trash"></span> Delete Post</a>
+
+    </div>
+  {% endif %}
 </div>
 
 <div class="mx-4" id="post_body_text_base">
