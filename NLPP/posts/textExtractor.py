@@ -59,7 +59,6 @@ def imageToText(filename, lang="eng"):
 
 # Function to convert a word document (.docx) to html
 def docxToText(file):
-    print(mammoth.convert_to_html(file).value)
     return mammoth.convert_to_html(file).value
 
 def convertToText(filename, lang):
