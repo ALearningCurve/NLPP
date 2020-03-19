@@ -73,3 +73,9 @@ a { color: blue; }
 #post_body_text_base {
   font-size: 1.5rem;
 }
+
+blockquote {
+  border-left: 10px solid #ccc;
+  padding: 10px .5rem;
+
+}

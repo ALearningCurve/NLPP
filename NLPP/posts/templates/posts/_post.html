@@ -13,10 +13,9 @@
 		Due On <span class="badge badge-secondary ">{{post.due_date}}</span>
   </div>
   {% if user == post.creator %}
-    <div class="col float-right">
+    <div class="float-right">
+        <a href="{% url 'groups:posts:update' slug=view.kwargs.slug pk=view.kwargs.pk %}" class=" btn btn-lg btn-outline-warning my-1"><span class="fa fa-edit"></span> Update Post</a>
         <a href="{% url 'groups:posts:delete' slug=view.kwargs.slug pk=view.kwargs.pk %}" class=" btn btn-lg btn-outline-danger my-1"><span class="fa fa-trash"></span> Delete Post</a>
-        <a href="{% url 'groups:posts:update' slug=view.kwargs.slug pk=view.kwargs.pk %}" class=" btn btn-lg btn-outline-danger my-1"><span class="fa fa-trash"></span> Update Post</a>
-
     </div>
   {% endif %}
 </div>
