@@ -74,6 +74,8 @@ class PostMembers(models.Model):
     has_completed_work = models.BooleanField(default=False)
     completion_date = models.DateTimeField()
 
+    
+
     def __str__(self):
         return self.user.username + " : " + self.post.name
 

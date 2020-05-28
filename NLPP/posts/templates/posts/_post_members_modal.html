@@ -10,14 +10,17 @@
       </div>
       <div class="modal-body">
       <ol>
-        <!-- Loop through all the members in the group and display username and actual name -->
-        {% for member in group.members.all %}
-          <li> {{member}} &emsp; ({{member.first_name}} {{member.last_name}}) <br> </li>
-
-          <!-- If the user is the creator give them the option to kick members our of the group -->
-          {% if user == group.creator %}
-          <a href="{% url 'groups:kick' pk=user.id slug=group.slug %}" class="btn btn-sm btn-danger"><span class="fa fa-sign-out"></span> Kick</a>
+        <!-- Loops through all the members the post is assigned to and shows wether or not they have completed it -->
+        {% for member in post.post_asignees.all %}
+          <!-- Shows the username and actual name of the asignees -->
+          <li> {{member.user.username}} &emsp; ({{member.user.first_name}} {{member.user.last_name}}) <br> </li>
+          <!-- shows wether or no work is completd, if completed shows date of completion -->
+          {% if member.has_completed_work %}
+            <p class="text-success"> Completed on {{member.completion_date}}</p>
+          {% else %}
+            <p class="text-danger"> Incomplete </p>
           {% endif %}
+
         {% endfor %}
       </ol>
       </div>
