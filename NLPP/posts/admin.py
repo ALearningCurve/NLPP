@@ -13,3 +13,4 @@ class PostAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Post, PostAdmin)
 admin.site.register(models.SupportedLanguages)
+admin.site.register(models.PostMembers)
