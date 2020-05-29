@@ -9,6 +9,7 @@ from django.contrib.auth import get_user_model
 from groups.models import Group
 
 from datetime import date
+import json
 User = get_user_model()
 
 
@@ -66,7 +67,11 @@ class Post(models.Model):
 
 
 
-# This keeps track of who is who
+# This keeps track of who has done what on each post
+# This includes the user, when the work was completed,
+# if it was completed, and has a one to many relationship with
+# UserPostInteractionInformation as the target
+    pass
 class PostMembers(models.Model):
     post = models.ForeignKey(Post,related_name='post_asignees',on_delete=models.CASCADE)
     user = models.ForeignKey(User,related_name='posts_assigned',on_delete=models.CASCADE)
@@ -74,10 +79,9 @@ class PostMembers(models.Model):
     has_completed_work = models.BooleanField(default=False)
     completion_date = models.DateTimeField()
 
-    
 
     def __str__(self):
-        return self.user.username + " : " + self.post.name
+        return  self.post.name + " : " +  self.user.username + " : " + str(self.has_completed_work)
 
     class Meta:
         unique_together = ("post", "user")
@@ -88,3 +92,30 @@ class SupportedLanguages(models.Model):
 
     def __str__(self):
         return self.name
+
+# Stores the information of whatthe user has done with the post such as what words they clicked on,
+# How many times they clicked on each word (and perhaps time spent on the post)
+class PostMemberInteractionInformation(models.Model):
+    post_member = models.OneToOneField(PostMembers, related_name='interaction_information', on_delete=models.CASCADE)
+
+    '''
+    These click fields are actualy stringified JSONS that are being handled by JSONHandler.add_value()
+    the jsons will look like the following where "number" is the amount of times clicked and ["word"]
+    is the word that was clicked "number" times
+    data = {
+        "1": ["uno", "single", "one"],
+        "2": ["dos", "double", "two"],
+        "3": ["tres", "triple", "three"]
+        }
+
+        {"1":[],}
+    '''
+    # Keeps track of the single clicks in the double click modal
+    # This should be the synomyns
+    single_clicks = models.TextField(default=json.dumps( {"1":[],} ))
+    # Keeps track of the double clicks in the double click modal
+    # This should be the definitions
+    double_clicks = models.TextField(default=json.dumps( {"1":[],} ))
+
+    def __str__(self):
+        return self.post_member.user.username + "Has Information"
