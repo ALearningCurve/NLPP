@@ -1,4 +1,5 @@
 import json
+from . import models
 
 '''
 This is a file to handle basic json editing that would be used in the posts' models.py
@@ -38,8 +39,8 @@ def add_value(toAdd, json):
     json["1"].append(toAdd)
 
 
-
-add_value("dos", data)
-add_value("dos", data)
-add_value("dos", data)
-print(json.dumps(data))
+def update_database(_request, _method, _post_pk):
+    post = models.Post.objects.get(id=_post_pk)
+    post_member = post.post_asignees.filter(user = _request.user)[0]
+    print(post_member.foobar)
+    #post_info = post_members.foobar.all()

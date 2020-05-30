@@ -67,25 +67,6 @@ class Post(models.Model):
 
 
 
-# This keeps track of who has done what on each post
-# This includes the user, when the work was completed,
-# if it was completed, and has a one to many relationship with
-# UserPostInteractionInformation as the target
-    pass
-class PostMembers(models.Model):
-    post = models.ForeignKey(Post,related_name='post_asignees',on_delete=models.CASCADE)
-    user = models.ForeignKey(User,related_name='posts_assigned',on_delete=models.CASCADE)
-
-    has_completed_work = models.BooleanField(default=False)
-    completion_date = models.DateTimeField()
-
-
-    def __str__(self):
-        return  self.post.name + " : " +  self.user.username + " : " + str(self.has_completed_work)
-
-    class Meta:
-        unique_together = ("post", "user")
-
 class SupportedLanguages(models.Model):
     code = models.CharField(max_length=5, unique=True)
     name = models.CharField(max_length=15, unique=True, null=True)
@@ -96,7 +77,7 @@ class SupportedLanguages(models.Model):
 # Stores the information of whatthe user has done with the post such as what words they clicked on,
 # How many times they clicked on each word (and perhaps time spent on the post)
 class PostMemberInteractionInformation(models.Model):
-    post_member = models.OneToOneField(PostMembers, related_name='interaction_information', on_delete=models.CASCADE)
+    post_member = models.OneToOneField('PostMembers', related_name='foobar', on_delete=models.CASCADE, null=True)
 
     '''
     These click fields are actualy stringified JSONS that are being handled by JSONHandler.add_value()
@@ -112,10 +93,43 @@ class PostMemberInteractionInformation(models.Model):
     '''
     # Keeps track of the single clicks in the double click modal
     # This should be the synomyns
-    single_clicks = models.TextField(default=json.dumps( {"1":[],} ))
+    single_clicks = models.TextField()
     # Keeps track of the double clicks in the double click modal
     # This should be the definitions
-    double_clicks = models.TextField(default=json.dumps( {"1":[],} ))
+    double_clicks = models.TextField()
 
     def __str__(self):
-        return self.post_member.user.username + "Has Information"
+        return self.post_member.user.username + " info"
+
+
+
+# This keeps track of who has done what on each post
+# This includes the user, when the work was completed,
+# if it was completed, and has a one to many relationship with
+# UserPostInteractionInformation as the target
+
+class PostMembers(models.Model):
+    post = models.ForeignKey(Post,related_name='post_asignees',on_delete=models.CASCADE)
+    user = models.ForeignKey(User,related_name='posts_assigned',on_delete=models.CASCADE)
+
+    has_completed_work = models.BooleanField(default=False)
+    completion_date = models.DateTimeField()
+
+
+    def save(self, *args, **kwargs):
+        is_new = not self.pk        # Checks if the object has been made before to get assin all of the users
+        super().save(*args, **kwargs)
+        # Generates new PostMembersInfo to track completion of post
+        if is_new:
+            post_info = PostMemberInteractionInformation(
+                post_member = self,
+                single_clicks = json.dumps( {"1":[],} ),
+                double_clicks = json.dumps( {"1":[],} ),
+            )
+            post_info.save()
+
+    def __str__(self):
+        return  self.post.name + " : " +  self.user.username + " : " + str(self.has_completed_work)
+
+    class Meta:
+        unique_together = ("post", "user")

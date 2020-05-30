@@ -53,6 +53,7 @@ function translate_api_call(p_text="error", p_lang="es-en") {
             csrfmiddlewaretoken: '{{ csrf_token }}',
             text: p_text,
             lang: p_lang,
+            post_pk: '{{post.id}}'
               },
         success:  function(response){
 

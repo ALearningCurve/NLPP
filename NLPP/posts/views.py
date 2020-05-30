@@ -17,6 +17,7 @@ import os
 from . import forms
 from . import models
 from . import textExtractor as out
+from . import JSONHandler
 
 from groups.models import Group
 
@@ -83,7 +84,7 @@ def translate(request):
     key = "trnsl.1.1.20200117T014254Z.b5ec263d36a25c07.698d2465df9fd59677fe87985d82aa6fef88f8af"
     text = request.POST['text']
     lang = request.POST['lang']
-
+    post_pk = request.POST['post_pk']
 
 
     is_cached = ('trans_'+lang+"_"+text in request.session)
@@ -100,6 +101,7 @@ def translate(request):
     #     'is_cached' : is_cached,
     # })
 
+    JSONHandler.update_database(_request = request, _method = 1, _post_pk = post_pk)
     return JsonResponse(translation)
 
 
