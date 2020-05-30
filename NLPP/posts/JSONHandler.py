@@ -57,6 +57,49 @@ def update_database(_request, _method, _post_pk, _text):
         post_info.double_clicks = json.dumps(data)
     post_info.save()
 
-class Methods(enum.Enum):
+def get_json(_info_object, _method):
+    print(_method == Methods.OneClick)
+    if (_method == Methods.OneClick) :
+        return json.loads(_info_object.single_clicks)
+    elif (_method == Methods.TwoClick):
+        return json.loads(_info_object.double_clicks)
+    else:
+        return (ErrorCodes.r404)
+
+# Holds two different columns in postmemberinteraction as ints
+# so that it is easy to identify them
+class Methods(enum.IntEnum):
     OneClick = 1
     TwoClick = 2
+
+
+# Hold some basic error codes that can be returned through JSON
+class ErrorCodes():
+    # 404 error when the specified object is not found/invalid
+    r404 = {
+        "error": {
+         "errors": [
+          {
+           "reason": "notFound",
+           "message": "Not Found"
+          }
+         ],
+         "code": 404,
+         "message": "Not Found"
+         }
+    }
+
+    # 403 error when the user does not have permissions to view material
+    r403 = {
+     "error": {
+      "errors": [
+       {
+        "domain": "global",
+        "reason": "forbidden",
+        "message": "Forbidden"
+        }
+      ],
+      "code": 403,
+      "message": "Forbidden"
+     }
+    }

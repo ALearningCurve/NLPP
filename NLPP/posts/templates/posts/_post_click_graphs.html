@@ -1,0 +1,50 @@
+<html>
+<head>
+<script type="text/javascript">
+window.onload = function() {
+
+var dataPoints = [];
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	theme: "light2",
+	title: {
+		text: "Times Clicked On Each Word"
+	},
+	axisY: {
+		title: "Word Count",
+		titleFontSize: 24
+	},
+	data: [{
+		type: "column",
+		xValueFormatString: "#,### Times Clicked",
+		dataPoints: dataPoints
+	}]
+});
+
+function addData(data) {
+	for (var i = 0; i < Object.keys(data).length; i++) {
+		dataPoints.push({
+			x: i + 1,
+			y: data[i+1].length,
+		});
+	}
+	chart.render();
+}
+
+var data = document.getElementById("loadedJSON").textContent;
+data = JSON.parse(data);
+addData(data);
+}
+
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+
+<span style="visibility:hidden" id="loadedJSON"> {{data}}</span>'
+</body>
+</html>
