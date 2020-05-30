@@ -1,5 +1,7 @@
 import json
+import enum
 from . import models
+
 
 '''
 This is a file to handle basic json editing that would be used in the posts' models.py
@@ -39,8 +41,22 @@ def add_value(toAdd, json):
     json["1"].append(toAdd)
 
 
-def update_database(_request, _method, _post_pk):
+def update_database(_request, _method, _post_pk, _text):
     post = models.Post.objects.get(id=_post_pk)
     post_member = post.post_asignees.filter(user = _request.user)[0]
-    print(post_member.foobar)
-    #post_info = post_members.foobar.all()
+    post_info = post_member.post_info
+
+    # Depending on the method used it will change a different JSON
+    if (_method == Methods.OneClick) :
+        data = json.loads(post_info.single_clicks)
+        add_value(_text, data)
+        post_info.single_clicks = json.dumps(data)
+    elif (_method == Methods.TwoClick):
+        data = json.loads(post_info.double_clicks)
+        add_value(_text, data)
+        post_info.double_clicks = json.dumps(data)
+    post_info.save()
+
+class Methods(enum.Enum):
+    OneClick = 1
+    TwoClick = 2

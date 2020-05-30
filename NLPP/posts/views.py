@@ -101,7 +101,7 @@ def translate(request):
     #     'is_cached' : is_cached,
     # })
 
-    JSONHandler.update_database(_request = request, _method = 1, _post_pk = post_pk)
+    JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.OneClick, _post_pk = post_pk, _text = text)
     return JsonResponse(translation)
 
 

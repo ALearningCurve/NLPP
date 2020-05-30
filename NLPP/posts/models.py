@@ -77,7 +77,7 @@ class SupportedLanguages(models.Model):
 # Stores the information of whatthe user has done with the post such as what words they clicked on,
 # How many times they clicked on each word (and perhaps time spent on the post)
 class PostMemberInteractionInformation(models.Model):
-    post_member = models.OneToOneField('PostMembers', related_name='foobar', on_delete=models.CASCADE, null=True)
+    post_member = models.OneToOneField('PostMembers', related_name='post_info', on_delete=models.CASCADE, null=True)
 
     '''
     These click fields are actualy stringified JSONS that are being handled by JSONHandler.add_value()
