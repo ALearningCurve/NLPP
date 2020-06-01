@@ -126,37 +126,32 @@ def translate(request):
 #         'is_cached' : is_cached,
 #     })
 
-
+# Uses language processing to convert images or extract from pdfs/word docs
 @xframe_options_sameorigin
 def file_upload(request, slug):
     return HttpResponse(out.convertToText(request.FILES['file'],"english"))
 
 
+
+
 # Gets the postInfo from the post_pk and post member pk
 # Returns a json with the post member info objects information
-def MemberInfoDetail(request, slug, post_pk, post_member_pk, method):
-    post = get_object_or_404(models.Post, pk=post_pk)
-    # Checks if the user is the creator, we onle want the creator to see who did what
-    # If not the creator then respond with an error
-    if (post.creator != request.user):
-        return JsonResponse(JSONHandler.ErrorCodes.r403)
-    # find the post member with the same primary key and if there are none,
-    # return an error
-    post_member = post.post_asignees.filter(id = post_member_pk)
-    if (post_member.count() == 0):
-        return JsonResponse(JSONHandler.ErrorCodes.r404)
-    post_member = post_member[0]
+def MemberInfoDetail(request, slug, post_info_pk, method):
+    post_info = get_object_or_404(models.PostMemberInteractionInformation,id=post_info_pk)
 
     # Get the json from the table and return the data or if not found return 404 error
-    info = JSONHandler.get_json(_method = method, _info_object = post_member.post_info)
+    info = JSONHandler.get_json(_method = method, _info_object = post_info)
     return JsonResponse(info)
 
 
-def graph(request, slug):
-    #return HttpResponse("ddd")
-    post = models.Post.objects.get(id=29)
-    post_member = post.post_asignees.filter(user = request.user)[0]
-    post_info = post_member.post_info.single_clicks
-    #post_info = json.loads(post_info)
-    print (post_info)
-    return render(request, 'posts/_post_click_graphs.html', {'data':post_info})
+def graph(request, slug, post_pk, post_member_pk, method):
+    # Checks if the user is the creator, we onle want the creator to see who did what
+    # If not the creator then respond with an error
+    post = get_object_or_404(models.Post, pk=post_pk)
+    if (post.creator != request.user):
+        raise Http404("You must be the post creator to see this page")
+
+    #path("<int:post_pk>/<int:post_member_pk>/<int:method>", views.MemberInfoDetail, name="member_info"),
+
+
+    return render(request, 'posts/post_click_graphs.html')

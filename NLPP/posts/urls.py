@@ -19,5 +19,9 @@ urlpatterns = [
     path("<int:pk>/delete/", views.DeletePost.as_view(), name="delete"),
     path("<int:pk>/update/", views.UpdatePost.as_view(), name="update"),
 
-    path("<int:post_pk>/<int:post_member_pk>/<int:method>", views.MemberInfoDetail, name="member_info")
+    path("<int:post_info_pk>/<int:method>", views.MemberInfoDetail, name="member_info"),
+
+    path("<int:post_pk>/<int:post_member_pk>/<int:method>/graph/", views.graph, name="graph"),
+    #path("<int:post_pk>/graph/", views.graph, name="graph"),
+
 ]

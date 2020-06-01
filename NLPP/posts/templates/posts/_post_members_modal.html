@@ -20,7 +20,14 @@
           {% else %}
             <p class="text-danger"> Incomplete </p>
           {% endif %}
-
+          <div class=container>
+            <h5>Single Clicks</h5>
+            {% include "posts/_user_interaction_data.html" with info=member.post_info method=1%}
+          </div>
+          <div class=container>
+            <h5>Double Clicks</h5>
+            {% include "posts/_user_interaction_data.html" with info=member.post_info method=2%}
+          </div>
         {% endfor %}
       </ol>
       </div>
