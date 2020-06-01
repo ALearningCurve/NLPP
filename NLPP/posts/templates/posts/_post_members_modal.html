@@ -8,27 +8,52 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="mx-4 my-1">
       <ol>
         <!-- Loops through all the members the post is assigned to and shows wether or not they have completed it -->
         {% for member in post.post_asignees.all %}
-          <!-- Shows the username and actual name of the asignees -->
-          <li> {{member.user.username}} &emsp; ({{member.user.first_name}} {{member.user.last_name}}) <br> </li>
-          <!-- shows wether or no work is completd, if completed shows date of completion -->
-          {% if member.has_completed_work %}
-            <p class="text-success"> Completed on {{member.completion_date}}</p>
-          {% else %}
-            <p class="text-danger"> Incomplete </p>
-          {% endif %}
-          {% include "posts/_nested_acordian.html"%}
-          <div class=container>
-            <h5>Single Clicks</h5>
-            {% include "posts/_user_interaction_data.html" with info=member.post_info method=1%}
+        <div class="my-1">
+          <!-- This is the part that is always visible -->
+          <div id="heading{{member.id}}">
+
+            <a class="hover-darken no-border card collapsed px-1" data-toggle="collapse" data-target="#collapse{{member.id}}" aria-expanded="true" aria-controls="collapse{{member.id}}">
+
+            <!-- Shows the username and actual name of the asignees -->
+            <li> {{member.user.username}} &emsp; ({{member.user.first_name}} {{member.user.last_name}}) <br> </li>
+            <!-- shows wether or no work is completd, if completed shows date of completion -->
+            {% if member.has_completed_work %}
+              <p class="text-success"> Completed on {{member.completion_date}}</p>
+            {% else %}
+              <p class="text-danger"> Incomplete </p>
+            {% endif %}
+            </a>
           </div>
-          <div class=container>
-            <h5>Double Clicks</h5>
-            {% include "posts/_user_interaction_data.html" with info=member.post_info method=2%}
+          <!-- this is what is shown their name is clicked -->
+          <div id="collapse{{member.id}}" class="collapse" aria-labelledby="heading{{member.id}}" data-parent="#accordion">
+              <!-- specific tables for each user, should be hiddin under a collapsable-->
+              <div class="container" id="heading{{member.id}}A">
+              <!-- header for table single clicks-->
+              <div class="hover-darken no-border card px-1 w-50" >
+                <a data-toggle="collapse" data-target="#collapse{{member.id}}A"><h5 class="font-weight-light">Single Clicks</h5></a>
+              </div>
+              <!-- data revealed by header single -->
+              <div class="card collapse no-border"  id="collapse{{member.id}}A">
+              {% include "posts/_user_interaction_data.html" with info=member.post_info method=1%}
+              </div>
+            </div>
+
+            <div class="container" id="heading{{member.id}}B">
+              <!-- header for tabe double clicks -->
+              <div class="hover-darken no-border card px-1 w-50" >
+                <a  data-toggle="collapse" data-target="#collapse{{member.id}}B"><h5 class="font-weight-light">Double Clicks</h5></a>
+              </div>
+              <!-- Data revealed by header double clicks -->
+              <div class="card collapse px-1 no-border"  id="collapse{{member.id}}B">
+              {% include "posts/_user_interaction_data.html" with info=member.post_info method=2%}
+              </div>
+            </div>
           </div>
+        </div>
         {% endfor %}
       </ol>
       </div>

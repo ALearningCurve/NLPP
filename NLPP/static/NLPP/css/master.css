@@ -81,3 +81,16 @@ blockquote {
   padding: 10px .5rem;
 
 }
+
+ol {
+    padding: 0;
+    list-style-type: none;
+}
+
+.hover-darken:hover{
+  background-color: #d3d3d3;
+}
+
+.no-border{
+  border:none;
+}
