@@ -1,52 +1,91 @@
 {% extends "posts/post_base.html" %}
 
 {% block post_content %}
-<!-- <div class="col-md-8"> -->
-    <h1> This is a translation test page </h2>
-      {{ text }}
+<div class="container">
 
-      <p>This information {{ is_cached|yesno:"was,wasn't" }} cached.</p>
-<!-- </div> -->
-<DicResult>
-  <head/>
-  <def pos="noun" ts="taɪm">
-    <text>time</text>
-    <tr pos="существительное">
-      <text>время</text>
-      <syn>
-        <text>раз</text>
-      </syn>
-      <syn>
-        <text>тайм</text>
-      </syn>
-      <mean>
-        <text>timing</text>
-      </mean>
-      <mean>
-        <text>fold</text>
-      </mean>
-      <mean>
-         <text>half</text>
-      </mean>
-      <ex>
-         <text>prehistoric time</text>
-         <tr>
-            <text>доисторическое время</text>
-         </tr>
-      </ex>
-      <ex>
-         <text>hundredth time</text>
-         <tr>
-            <text>сотый раз</text>
-         </tr>
-      </ex>
-      <ex>
-         <text>time-slot</text>
-         <tr>
-            <text>тайм-слот</text>
-         </tr>
-      </ex>
-    </tr>
-  </def>
-</DicResult>
+        <!-- The first card -->
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0 d-inline">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      Collapsible #1
+                    </button>
+                 </h5>
+            </div>
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body" id="child1">
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapseOneA">Child A</a>
+                        </div>
+                        <div class="card-body collapse" data-parent="#child1" id="collapseOneA">
+                            Crunch wolf moon tempor, sunt aliqua put a bird.
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapseOneB">Child B</a>
+                        </div>
+                        <div class="card-body collapse" data-parent="#child1" id="collapseOneB">
+                            Another flipp runch wolf moon tempor, sunt aliqua put a bird.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- The Second card -->
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0 d-inline">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                      Collapsible #2
+                    </button>
+                 </h5>
+            </div>
+            <div id="collapseTwo" class="collapse " aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body" id="child1">
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapseOneA2">Child A2</a>
+                        </div>
+                        <div class="card-body collapse" data-parent="#child1" id="collapseOneA2">
+                            Crunch wolf moon tempor, sunt aliqua put a bird.
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="#" data-toggle="collapse" data-target="#collapseOneB2">Child B</a>
+                        </div>
+                        <div class="card-body collapse" data-parent="#child1" id="collapseOneB2">
+                            Another flipp runch wolf moon tempor, sunt aliqua put a bird.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+</div>
 {% endblock %}
+
+
+
+
+
+
+
+<div class="card">
+    <div class="card-header" id="headingThree">
+        <h5 class="mb-0">
+<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+  Collapsible #3
+</button>
+</h5>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+        <div class="card-body">
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird
+            on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table,
+            raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        </div>
+    </div>
+</div>
