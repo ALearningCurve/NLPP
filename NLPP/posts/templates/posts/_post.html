@@ -16,7 +16,7 @@
     <div class="row mt-4">
       <div class="col-6">
           <button type="button" class="btn btn-lg btn-outline-primary" data-toggle="modal" data-target="#MemberList">
-            <i class="fa fa-eject"></i> Members
+            <i class="fa fa-eject"></i> Interaction Info
           </button>
       </div>
       <div class="col-6">
@@ -25,6 +25,18 @@
       </div>
   </div>
   {% endif %}
+
+  {% for member in post.post_asignees.all %}
+  {% if member.user == user %}
+  {% if member.user != post.creator %}
+
+
+  <button type="button" class="btn btn-lg btn-outline-primary mt-3" data-toggle="modal" data-target="#MemberList">
+    <i class="fa fa-eject"></i> Interaction Info
+  </button>
+  {% endif %}
+  {% endif %}
+  {% endfor %}
 </div>
 
 <div class="mx-4" id="post_body_text_base">

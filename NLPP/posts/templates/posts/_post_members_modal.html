@@ -3,14 +3,15 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Member List</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Interaction Info</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="mx-4 my-1">
       <ol>
-        <!-- Loops through all the members the post is assigned to and shows wether or not they have completed it -->
+        {% if user == post.creator %}
+        <!-- Shows all of the members the post is assigned to and shows wether or not they have completed it -->
         {% for member in post.post_asignees.all %}
         <div class="my-1">
           <!-- This is the part that is always visible -->
@@ -55,6 +56,39 @@
           </div>
         </div>
         {% endfor %}
+
+
+        {% else %}
+          <!-- Gets the one user's info if they are in the post members -->
+          {% for member in post.post_asignees.all %}
+            {% if member.user == user %}
+            <!-- specific tables for each user, should be hiddin under a collapsable-->
+            <div class="container" id="heading{{member.id}}A">
+            <!-- header for table single clicks-->
+            <div class="hover-darken no-border card px-1 w-50" >
+              <a data-toggle="collapse" data-target="#collapse{{member.id}}A"><h5 class="font-weight-light">Single Clicks</h5></a>
+            </div>
+            <!-- data revealed by header single -->
+            <div class="card collapse no-border show"  id="collapse{{member.id}}A">
+            {% include "posts/_user_interaction_data.html" with info=member.post_info method=1%}
+            </div>
+          </div>
+
+
+          <div class="container" id="heading{{member.id}}B">
+            <!-- header for tabe double clicks -->
+            <div class="hover-darken no-border card px-1 w-50" >
+              <a  data-toggle="collapse" data-target="#collapse{{member.id}}B"><h5 class="font-weight-light">Double Clicks</h5></a>
+            </div>
+            <!-- Data revealed by header double clicks -->
+            <div class="card collapse px-1 no-border show"  id="collapse{{member.id}}B">
+            {% include "posts/_user_interaction_data.html" with info=member.post_info method=2%}
+            </div>
+          </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
       </ol>
       </div>
       <div class="modal-footer">

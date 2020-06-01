@@ -23,6 +23,5 @@ urlpatterns = [
 
     path("<int:post_pk>/<int:post_member_pk>/<int:method>/graph/", views.graph, name="graph"),
 
-    path("test/", views.test, name = "test")
-
+    #path("test/", views.test, name = "test")
 ]

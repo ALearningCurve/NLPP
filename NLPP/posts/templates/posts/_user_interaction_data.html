@@ -8,17 +8,14 @@
   </thead>
 	<tbody id="data-table-empty-body-{{info.id}}-{{method}}">
 		<!--
+    Example table structure
     <tr>
       <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+      <td>Mark, LMAO, perro </td>
     </tr>
 	-->
   </tbody>
-
 </table>
-
 <script>
 
 function fillTable(data){
@@ -34,16 +31,14 @@ function fillTable(data){
 			} catch {}
       count ++;
 	}
+  // If there is no data (ie. the user has not clicked anything) then don't display the tables
+  // and return that there was no data
   if (count == 0) {
     $("#data-table-{{info.id}}-{{method}}").empty()
     $("#data-table-{{info.id}}-{{method}}").append("<em class='text-warning'>No Data</em>");//"<tr> <th scope=1></th> <td><span class=\"warning\">No Click Data<span></td></tr>")
   }
 
 }
-
-
-var p = window.location.href
-p = p.substring(0, p.length-7);
 
 $.getJSON("http://127.0.0.1:8000/groups/bofe-baser/posts/{{info.id}}/{{method}}", fillTable);
 

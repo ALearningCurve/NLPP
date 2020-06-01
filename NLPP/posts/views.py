@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.http import Http404, HttpResponse, JsonResponse
 from django.views import generic
@@ -136,22 +137,29 @@ def file_upload(request, slug):
 
 # Gets the postInfo from the post_pk and post member pk
 # Returns a json with the post member info objects information
+@login_required
 def member_info_detail(request, slug, post_info_pk, method):
     post_info = get_object_or_404(models.PostMemberInteractionInformation,id=post_info_pk)
 
+    # If user is not one the person who made the data or own the post, then return an error
+    if(post_info.post_member.user != request.user and post_info.post_member.post.creator != request.user):
+        return JsonResponse(JSONHandler.ErrorCodes.r403)
     # Get the json from th e table and return the data or if not found return 404 error
     info = JSONHandler.get_json(_method = method, _info_object = post_info)
     return JsonResponse(info)
 
 
+# fills out a graph with the provided information
+@login_required
 def graph(request, slug, post_pk, post_member_pk, method):
     # Checks if the user is the creator, we onle want the creator to see who did what
     # If not the creator then respond with an error
     post = get_object_or_404(models.Post, pk=post_pk)
     if (post.creator != request.user):
         raise Http404("You must be the post creator to see this page")
-    #path("<int:post_pk>/<int:post_member_pk>/<int:method>", views.MemberInfoDetail, name="member_info"),
     return render(request, 'posts/post_click_graphs.html')
 
+# Simple testing page to see what some functions do,
+# and is normally disabled
 def test(request, slug):
     return render(request, 'posts/test.html')
