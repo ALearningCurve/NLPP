@@ -101,32 +101,6 @@ def translate(request):
     return JsonResponse(translation)
 
 
-# provides dictionary translations for words , only works for english to other language, not the other way around
-# def translate(request):
-#     url = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?"
-#     key = "dict.1.1.20200122T170248Z.de87d85bf55ff34f.1d5d0127e696c6496ff9250a57595d18c38f5abd"
-#     text = "hola"
-#     lang = "es-en"
-#
-#
-#
-#
-#     is_cached = ('dict_'+lang+"_"+text in request.session)
-#
-#     if not is_cached:
-#         url = url + "key="+key+"&text="+text+"&lang="+lang
-#         response = requests.get(url, verify=False)
-#         request.session['dict_'+lang+"_"+text] = response.json()
-#
-#     translation = request.session['dict_'+lang+"_"+text]
-#
-#
-#     return render(request, 'posts/test.html', {
-#
-#         'text': translation,
-#         'is_cached' : is_cached,
-#     })
-
 # Uses language processing to convert images or extract from pdfs/word docs
 @xframe_options_sameorigin
 def file_upload(request, slug):
@@ -157,7 +131,7 @@ def graph(request, slug, post_pk, post_member_pk, method):
     post = get_object_or_404(models.Post, pk=post_pk)
     if (post.creator != request.user):
         raise Http404("You must be the post creator to see this page")
-    return render(request, 'posts/post_click_graphs.html')
+    return render(request, 'posts/_post_click_graphs.html')
 
 # Simple testing page to see what some functions do,
 # and is normally disabled

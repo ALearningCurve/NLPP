@@ -40,6 +40,7 @@ function fillTable(data){
 
 }
 
-$.getJSON("http://127.0.0.1:8000/groups/bofe-baser/posts/{{info.id}}/{{method}}", fillTable);
+
+$.getJSON("/groups/{{info.post_member.post.group.slug}}/posts/{{info.id}}/{{method}}", fillTable);
 
 </script>
