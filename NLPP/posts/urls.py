@@ -21,7 +21,8 @@ urlpatterns = [
 
     path("<int:post_info_pk>/<int:method>", views.member_info_detail, name="member_info"),
 
-    path("<int:post_pk>/<int:post_member_pk>/<int:method>/graph/", views.graph, name="graph"),
-
+    # Uncomment this to see the test page or the graph page
+    # Graph page is not yet fully functional
+    #path("<int:post_pk>/<int:post_member_pk>/<int:method>/graph/", views.graph, name="graph"),
     #path("test/", views.test, name = "test")
 ]
