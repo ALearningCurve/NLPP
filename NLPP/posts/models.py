@@ -32,7 +32,7 @@ class Post(models.Model):
 
     # defualt=2 sets the translation from english to english
     from_lang = models.ForeignKey('SupportedLanguages', related_name="from_langs", on_delete=models.CASCADE)
-    to_lang = models.ForeignKey('SupportedLanguages', related_name="to_langs", on_delete=models.CASCADE)
+    to_lang = models.ForeignKey('SupportedLanguages', related_name="to_langs", on_delete=models.CASCADE, default=2)
 
     def save(self, *args, **kwargs):
         self.body_text = misaka.html(self.body_text)
@@ -42,10 +42,7 @@ class Post(models.Model):
 
         # Generates new PostMembers to track completion of post
         if is_new:
-            print("Generating users")
-
             for member in self.group.members.all():
-                print ("Adding: " + member.username)
                 post_mem = PostMembers(
                     id=None,
                     post=self,

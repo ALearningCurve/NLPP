@@ -58,7 +58,6 @@ def update_database(_request, _method, _post_pk, _text):
     post_info.save()
 
 def get_json(_info_object, _method):
-    print(_method == Methods.OneClick)
     if (_method == Methods.OneClick) :
         return json.loads(_info_object.single_clicks)
     elif (_method == Methods.TwoClick):
