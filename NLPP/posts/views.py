@@ -100,6 +100,28 @@ def translate(request):
     JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.OneClick, _post_pk = post_pk, _text = text)
     return JsonResponse(translation)
 
+def dictionary(request):
+    app_id = '87df45ef'
+    app_key = '35efd56c2ddcebd8d306ef8af27773d2'
+
+    language = 'es'
+    word_id = 'perro'
+    url = 'https://od-api.oxforddictionaries.com:443/api/v2/entries/'  + language + '/'  + word_id.lower()
+    #url Normalized frequency
+    #urlFR = 'https://od-api.oxforddictionaries.com:443/api/v2/stats/frequency/word/'  + language + '/?corpus=nmc&lemma=' + word_id.lower()
+    r = requests.get(url, headers = {'app_id' : app_id, 'app_key' : app_key})
+    print("code {}\n".format(r.status_code))
+    r = r.json()
+
+    #print ("<br>".join(r['results'][0]['lexicalEntries'][0]['entries'][0]['senses'][0]['definitions'])) #['lexicalEntries'])
+    print ("\n--------")
+    for i in range(len(r['results'][0]['lexicalEntries'])):
+        print ("\n".join(r['results'][0]['lexicalEntries'][i]['entries'][0]['senses'][0]['definitions'])) #['lexicalEntries'])
+        print ("--------")
+    #print("text \n" + r.text)
+    #print("json \n" + json.dumps(r.json()))
+    return HttpResponse(json.dumps(r))
+
 
 # Uses language processing to convert images or extract from pdfs/word docs
 @xframe_options_sameorigin

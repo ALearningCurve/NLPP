@@ -31,6 +31,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
 
     path('translate/', posts_views.translate, name="translate"),
+    path('dictionary/', posts_views.dictionary, name="dictionary"),
 
 ]
 
