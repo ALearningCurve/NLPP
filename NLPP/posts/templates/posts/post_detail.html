@@ -18,6 +18,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      
+        <button type="button" id="MoreInfo" class="btn btn-info" >More Info</button>
       </div>
     </div>
   </div>
@@ -38,10 +40,29 @@ function get_selection() {
 }
 
 $(document).dblclick(function(e) {
-    var t = get_selection();
+    var t = get_selection().toString();
+    t = t.trim();
+    t = t.toLowerCase();
+    var l = '{{post.from_lang.ISO639_1}}'
+    synomyn_api_call(t, l);
+  
+    var t = get_selection().toString();
+    t = t.trim();
+    t = t.toLowerCase();
     var l = '{{post.from_lang.code}}' + "\-" + '{{post.to_lang.code}}';
+    translate_api_call(t.toString(), l); 
 
-    translate_api_call(t.toString(), l);
+    
+});
+
+$(function(){
+    $('#MoreInfo').click(function() {
+      var t = get_selection().toString();
+      t = t.trim();
+      t = t.toLowerCase();
+      var l = '{{post.from_lang.code}}' + "\-" + '{{post.to_lang.code}}';
+      translate_api_call(t.toString(), l); 
+    });
 });
 
 
@@ -68,7 +89,41 @@ function translate_api_call(p_text="error", p_lang="es-en") {
 
 
                $("#api-filler").html(translation_text);
+               $("#MoreInfo").toggle(false);
+               
+               
+           }
+    });
+}
+
+function synomyn_api_call(p_text="error", p_lang="error") {
+  $.ajax({
+        type: "POST",
+        url: '{% url "synonyms"  %}',
+        data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            text: p_text,
+            lang: p_lang,
+            post_pk: '{{post.id}}'
+              },
+        success:  function(response){
+
+               var synomyn_text = "<p> <span class='lead'>Synomyns: </span>" +  response["words"] + "</p>";
+
+       
+               synomyn_text += '<p>View on the translator for more translations and translators</p>';
+
+               synomyn_text += "<p class='my-1'><a class='mx-4' target='_blank' href='https://translate.yandex.com/?lang=" + "{{post.from_lang.code}}" + "\-" + "{{post.to_lang.code}}"+"&text="+p_text+"'>Yandex (Gives Synomyns + Translations!)</a></p>";
+               synomyn_text += "<p class='my-1'><a class='mx-4' target='_blank' href='https://translate.google.com/?q="+p_text+"&sl={{post.to_lang.code}}+&tl={{post.to_lang}}'>Google Translate</a></p>"; 
+            
+
+
+
+
+               $("#api-filler").html(synomyn_text);
+               $("#MoreInfo").toggle(true);
                $('#translateModal').modal('toggle');
+               
            }
     });
 }

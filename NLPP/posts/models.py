@@ -65,7 +65,8 @@ class Post(models.Model):
 
 
 class SupportedLanguages(models.Model):
-    code = models.CharField(max_length=5, unique=True)
+    code = models.CharField(max_length=2, unique=True, null=False)
+    ISO639_1 = models.CharField(max_length=5, unique=True, null=False)
     name = models.CharField(max_length=15, unique=True, null=True)
 
     def __str__(self):

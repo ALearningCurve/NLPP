@@ -93,12 +93,24 @@ class ErrorCodes():
      "error": {
       "errors": [
        {
-        "domain": "global",
         "reason": "forbidden",
         "message": "Forbidden"
         }
       ],
       "code": 403,
       "message": "Forbidden"
+     }
+    }
+
+    r400 = {
+     "error": {
+      "errors": [
+       {
+        "reason": "bad request",
+        "message": "Bad request syntax or missing values"
+        }
+      ],
+      "code": 400,
+      "message": "BadRequest"
      }
     }
