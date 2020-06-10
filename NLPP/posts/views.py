@@ -100,27 +100,46 @@ def translate(request):
     JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.OneClick, _post_pk = post_pk, _text = text)
     return JsonResponse(translation)
 
-def dictionary(request):
-    app_id = '87df45ef'
-    app_key = '35efd56c2ddcebd8d306ef8af27773d2'
+def synonyms(request):
+    # Data used to fill in the url that we use to request synonyms from
+    apikey = "mCh1ApptSlVCxi5Hz2pQ" # NOTE: replace test_only with your own key
+    word = "peace" # any word
+    language = "en_US" # you can use: en_US, es_ES, de_DE, fr_FR, it_IT
+    endpoint = "http://thesaurus.altervista.org/thesaurus/v1"
 
-    language = 'es'
-    word_id = 'perro'
-    url = 'https://od-api.oxforddictionaries.com:443/api/v2/entries/'  + language + '/'  + word_id.lower()
-    #url Normalized frequency
-    #urlFR = 'https://od-api.oxforddictionaries.com:443/api/v2/stats/frequency/word/'  + language + '/?corpus=nmc&lemma=' + word_id.lower()
-    r = requests.get(url, headers = {'app_id' : app_id, 'app_key' : app_key})
-    print("code {}\n".format(r.status_code))
-    r = r.json()
 
-    #print ("<br>".join(r['results'][0]['lexicalEntries'][0]['entries'][0]['senses'][0]['definitions'])) #['lexicalEntries'])
-    print ("\n--------")
-    for i in range(len(r['results'][0]['lexicalEntries'])):
-        print ("\n".join(r['results'][0]['lexicalEntries'][i]['entries'][0]['senses'][0]['definitions'])) #['lexicalEntries'])
-        print ("--------")
-    #print("text \n" + r.text)
-    #print("json \n" + json.dumps(r.json()))
-    return HttpResponse(json.dumps(r))
+    # Request the synonyms and then convert to to json
+    # url = endpoint + "?word=" + word.lower() + "&language=" + language + "&key=" + apikey + "&output=json"
+    # r = requests.get(url)
+    # r = json.loads(r.text)
+
+    # Sample json expected
+    r = json.loads('{"response": [{"list": {"category": "(noun)", "synonyms": "order (generic term)|war (antonym)"}}, {"list": {"category": "(noun)", "synonyms": "harmony (generic term)|concord (generic term)|concordance (generic term)"}}, {"list": {"category": "(noun)", "synonyms": "peacefulness|peace of mind|repose|serenity|heartsease|ataraxis|tranquillity (generic term)|tranquility (generic term)|quietness (generic term)|quietude (generic term)"}}, {"list": {"category": "(noun)", "synonyms": "public security|security (generic term)"}}, {"list": {"category": "(noun)", "synonyms": "peace treaty|pacification|treaty (generic term)|pact (generic term)|accord (generic term)"}}]}')
+
+    # Words extracted frrom the json will be put into this array
+    words = []
+    
+    # Loops through each array element in the JSON response to get the words
+    for row in range(len(r['response'])):
+        data = r['response'][row]['list']['synonyms']
+        data = data.split('|')
+
+        # Cleans up the word entries
+        for i in range(len(data)):
+            # Remove (antonym)
+            ind = data[i].find('(a')
+            if (ind > -1):
+                data.pop(i)
+                break
+            # Remove (generic term) 
+            ind = data[i].find('(g')
+            if (ind > -1):
+                data[i] = data[i][0:ind-1]
+            
+        words.append(data)
+        # adds the array of words from the element to the array
+    words = {'words':words}
+    return JsonResponse(words)
 
 
 # Uses language processing to convert images or extract from pdfs/word docs
