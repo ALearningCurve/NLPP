@@ -99,60 +99,43 @@ def translate(request):
 
     translation = request.session['trans_'+lang+"_"+text]
 
-    JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.OneClick, _post_pk = post_pk, _text = text)
+    JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.TwoClick, _post_pk = post_pk, _text = text)
     return JsonResponse(translation)
 
 def synonyms(request):
-    r = {}
-    try:
-        # Data used to fill in the url that we use to request synonyms from
-        apikey = "mCh1ApptSlVCxi5Hz2pQ" # NOTE: replace test_only with your own key
-        word = request.POST['text'] #"peace" # any word
-        language = request.POST['lang'] #"en_US" # you can use: en_US, es_ES, de_DE, fr_FR, it_IT
-        endpoint = "http://thesaurus.altervista.org/thesaurus/v1"
-        post_pk = request.POST['post_pk']
+    url = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?"
+    key = "dict.1.1.20200122T170248Z.de87d85bf55ff34f.1d5d0127e696c6496ff9250a57595d18c38f5abd"
+    text = request.POST['text'].lower().strip()
+    lang = request.POST['lang']
 
 
-        # Request the synonyms and then convert to to json
-        url = endpoint + "?word=" + word.lower() + "&language=" + language + "&key=" + apikey + "&output=json"
 
-        print(url)
-        r = requests.get(url)
-        r = json.loads(r.text)
-    except:
-        return JsonResponse(JSONHandler.ErrorCodes.r400)
+    # Request data from the yandex API
+    url = url + "key="+key+"&text="+text+"&lang="+lang
+    response = requests.get(url, verify=False)
+    data = json.loads(response.text)
 
-    JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.TwoClick, _post_pk = post_pk, _text = word)
-    # Sample json expected
-    #r = json.loads('{"response": [{"list": {"category": "(noun)", "synonyms": "order (generic term)|war (antonym)"}}, {"list": {"category": "(noun)", "synonyms": "harmony (generic term)|concord (generic term)|concordance (generic term)"}}, {"list": {"category": "(noun)", "synonyms": "peacefulness|peace of mind|repose|serenity|heartsease|ataraxis|tranquillity (generic term)|tranquility (generic term)|quietness (generic term)|quietude (generic term)"}}, {"list": {"category": "(noun)", "synonyms": "public security|security (generic term)"}}, {"list": {"category": "(noun)", "synonyms": "peace treaty|pacification|treaty (generic term)|pact (generic term)|accord (generic term)"}}]}')
+    info = {}   #dictionary holding all the words under all the definitions
+    words = {}  #dictipmary holding words under each definitions
+    sub = []    #holds the words under the "syn" key
+    
+    # Loop through possible definitions of the word
+    for definition in range(len(data["def"])):
+        words = {}
+        # Loop through all of the words used to describe the word
+        for entry in range(len((data["def"][definition]["tr"]))):
+            sub = []
+            # Get the nested words (if any)
+            if ('syn' in data["def"][definition]["tr"][entry]):
+                for child in range(len(data["def"][definition]["tr"][entry]['syn'])):
+                    sub.append(data["def"][definition]["tr"][entry]['syn'][child]['text'])
 
-    # Words extracted frrom the json will be put into this array
-    words = []
-    try:
-        # Loops through each array element in the JSON response to get the words
-        for row in range(len(r['response'])):
-            data = r['response'][row]['list']['synonyms']
-            data = data.split('|')
-
-            # Cleans up the word entries
-            for i in range(len(data)):
-                # Remove (antonym)
-                ind = data[i].find('(a')
-                if (ind > -1):
-                    data.pop(i)
-                    break
-                # Remove (generic term) 
-                ind = data[i].find('(g')
-                if (ind > -1):
-                    data[i] = data[i][0:ind-1]
-            # adds the array of words from the element to the array
-            words.append(data)
-
-        words = {'words':words}
-
-        return JsonResponse(words)
-    except:
-        return JsonResponse(r)
+            words[data["def"][definition]["tr"][entry]['text']] = sub
+        
+                    
+        info[str(definition)] = words  
+    print(url)
+    return JsonResponse(info)
 
 
 # Uses language processing to convert images or extract from pdfs/word docs

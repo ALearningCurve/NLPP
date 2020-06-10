@@ -93,7 +93,7 @@ class PostMemberInteractionInformation(models.Model):
     # This should be the synomyns
     single_clicks = models.TextField()
     # Keeps track of the double clicks in the double click modal
-    # This should be the definitions
+    # This should be the translations
     double_clicks = models.TextField()
 
     def __str__(self):

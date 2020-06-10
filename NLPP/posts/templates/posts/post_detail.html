@@ -43,14 +43,9 @@ $(document).dblclick(function(e) {
     var t = get_selection().toString();
     t = t.trim();
     t = t.toLowerCase();
-    var l = '{{post.from_lang.ISO639_1}}'
+    var l = '{{post.from_lang.code}}' + "\-" + '{{post.from_lang.code}}'
     synomyn_api_call(t, l);
   
-    var t = get_selection().toString();
-    t = t.trim();
-    t = t.toLowerCase();
-    var l = '{{post.from_lang.code}}' + "\-" + '{{post.to_lang.code}}';
-    translate_api_call(t.toString(), l); 
 
     
 });
@@ -107,8 +102,30 @@ function synomyn_api_call(p_text="error", p_lang="error") {
             post_pk: '{{post.id}}'
               },
         success:  function(response){
+               var stringBuilder = "";
+               // Loop through the elements of the JSON to get/format the words
+               for (definition in response){
+                  if (response.length > 1 ){ stringBuilder += "<h5> Set " + (parseInt(definition) + 1).toString(10) + "</h5>";  }
+                  stringBuilder += "<ul>";
 
-               var synomyn_text = "<p> <span class='lead'>Synomyns: </span>" +  response["words"] + "</p>";
+                  // Gets the acutal words under each definition
+                  for (word in response[definition]){
+                    // Adds the parent word to the list
+                    stringBuilder += "<li>" + word + "</li>";
+
+                    // Adds the children to the indented list
+                    stringBuilder += "<ul>";
+                    for (childWord in response[definition][word]) {
+                      stringBuilder += "<li>" + response[definition][word][childWord] + "</li>";
+                    }
+                    stringBuilder += "</ul>";
+                  }
+                  stringBuilder += "</ul>";
+               }
+
+               if (stringBuilder.length < 1) { stringBuilder = "no synomyns found"; }
+
+               var synomyn_text = "<p> <span class='lead'>Synomyns: </span>" +  stringBuilder + "</p>";
 
        
                synomyn_text += '<p>View on the translator for more translations and translators</p>';
