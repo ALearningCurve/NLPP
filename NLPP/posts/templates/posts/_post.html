@@ -8,9 +8,10 @@
   <p class="lead"> &emsp; {{post.description}}</p>
   <hr class=mt-5>
   <div class="row">
-    Creator <span class="badge badge-secondary mr-2">{{post.creator}}</span>
-    Assigned <span class="badge badge-secondary mr-2">{{post.creation_date}}</span>
-		Due On <span class="badge badge-secondary ">{{post.due_date}}</span>
+    Creator <span class="badge badge-secondary ml-1 mr-3">{{post.creator}}</span>
+    Assigned <span class="badge badge-secondary ml-1 mr-3">{{post.creation_date}}</span>
+		Due On <span class="badge badge-secondary ml-1 mr-3">{{post.due_date}}</span>
+    Mininum Clicks <span class="badge badge-secondary ml-1 mr-3">{{post.clicks_to_complete}}</span>
   </div>
   {% if user == post.creator %}
     <div class="row mt-4">

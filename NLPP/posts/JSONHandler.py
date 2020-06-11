@@ -66,21 +66,26 @@ def update_database(_request, _method, _post_pk, _text):
         add_value(_text, data)
         post_info.single_clicks = json.dumps(data)
 
-        # Check to see if assignment is complete
-        if (not post_info.post_member.has_completed_work):
-            # if the clicked words is more than the required clicks, then update the completion date and completion boolean
-            if (count_words(data) >= post_info.post_member.post.clicks_to_complete):
-                post_info.post_member.has_completed_work = True
-                post_info.post_member.completion_date = datetime.now()
-                post_info.post_member.save()
     elif (_method == Methods.TwoClick):
         data = json.loads(post_info.double_clicks)
         add_value(_text, data)
         post_info.double_clicks = json.dumps(data)
     post_info.save()
 
+'''
+gets the specified JSON and checks to see if the work was completed and update table appropiatly (only checks on the 
+method.OneClick so as to reduce repetitive check)
+'''
 def get_json(_info_object, _method):
+    
     if (_method == Methods.OneClick) :
+        # Check to see if assignment is complete
+        if (not _info_object.post_member.has_completed_work):
+            # if the clicked words is more than the required clicks, then update the completion date and completion boolean
+            if (count_words(json.loads(_info_object.single_clicks)) >= _info_object.post_member.post.clicks_to_complete):
+                _info_object.post_member.has_completed_work = True
+                _info_object.post_member.completion_date = datetime.now()
+                _info_object.post_member.save()
         return json.loads(_info_object.single_clicks)
     elif (_method == Methods.TwoClick):
         return json.loads(_info_object.double_clicks)
