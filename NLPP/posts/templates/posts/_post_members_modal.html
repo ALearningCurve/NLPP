@@ -19,14 +19,21 @@
 
             <a class="hover-darken no-border card collapsed px-1" data-toggle="collapse" data-target="#collapse{{member.id}}" aria-expanded="true" aria-controls="collapse{{member.id}}">
 
-            <!-- Shows the username and actual name of the asignees -->
+            {% comment %}  Shows the username and actual name of the asignees {% endcomment %}
             <li> {{member.user.username}} &emsp; ({{member.user.first_name}} {{member.user.last_name}}) <br> </li>
-            <!-- shows wether or no work is completd, if completed shows date of completion -->
+            {% comment %} shows wether or no work is completd, if completed shows date of completion {% endcomment %}
             {% if member.has_completed_work %}
-              <p class="text-success"> Completed on {{member.completion_date}}</p>
+              {% comment %} If the completion date is past the due date then show text as red {% endcomment %}
+              {% if member.completion_date > member.post.due_date %}
+                  <p class="text-danger">
+              {% else %}
+                <p class="text-success">
+              {% endif %}
+               Completed on {{member.completion_date}}</p>
             {% else %}
               <p class="text-danger"> Incomplete </p>
             {% endif %}
+
             </a>
           </div>
           <!-- this is what is shown their name is clicked -->

@@ -105,12 +105,15 @@ def translate(request):
     return JsonResponse(translation)
 
 def synonyms(request):
-    url = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?"
-    key = "dict.1.1.20200122T170248Z.de87d85bf55ff34f.1d5d0127e696c6496ff9250a57595d18c38f5abd"
-    text = request.POST['text'].lower().strip()
-    lang = request.POST['lang']
-    update = request.POST['update']
-    post_pk = request.POST['post_pk']
+    try:
+        url = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?"
+        key = "dict.1.1.20200122T170248Z.de87d85bf55ff34f.1d5d0127e696c6496ff9250a57595d18c38f5abd"
+        text = request.POST['text'].lower().strip()
+        lang = request.POST['lang']
+        update = request.POST['update']
+        post_pk = request.POST['post_pk']
+    except:
+        return JsonResponse(JSONHandler.ErrorCodes.r400)
 
 
 
@@ -123,25 +126,30 @@ def synonyms(request):
     words = {}  #dictipmary holding words under each definitions
     sub = []    #holds the words under the "syn" key
     
-    # Loop through possible definitions of the word
-    for definition in range(len(data["def"])):
-        words = {}
-        # Loop through all of the words used to describe the word
-        for entry in range(len((data["def"][definition]["tr"]))):
-            sub = []
-            # Get the nested words (if any)
-            if ('syn' in data["def"][definition]["tr"][entry]):
-                for child in range(len(data["def"][definition]["tr"][entry]['syn'])):
-                    sub.append(data["def"][definition]["tr"][entry]['syn'][child]['text'])
+    try:
+        # Loop through possible definitions of the word
+        for definition in range(len(data["def"])):
+            words = {}
+            # Loop through all of the words used to describe the word
+            for entry in range(len((data["def"][definition]["tr"]))):
+                sub = []
+                # Get the nested words (if any)
+                if ('syn' in data["def"][definition]["tr"][entry]):
+                    for child in range(len(data["def"][definition]["tr"][entry]['syn'])):
+                        sub.append(data["def"][definition]["tr"][entry]['syn'][child]['text'])
 
-            words[data["def"][definition]["tr"][entry]['text']] = sub
-        
-                    
-        info[str(definition)] = words  
-    if (update == "y"):
-        JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.OneClick, _post_pk = post_pk, _text = text)
-
-    return JsonResponse(info)
+                words[data["def"][definition]["tr"][entry]['text']] = sub
+            
+                        
+            info[str(definition)] = words  
+        if (update == "y"):
+            JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.OneClick, _post_pk = post_pk, _text = text)
+        return JsonResponse(info)
+    except:
+        print("___________________")
+        print(json.dumps(data))
+        print("___________________")
+        return JsonResponse({})
 
 
 # Uses language processing to convert images or extract from pdfs/word docs

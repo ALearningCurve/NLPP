@@ -1,6 +1,7 @@
 import json
 import enum
 from . import models
+from datetime import datetime
 
 
 '''
@@ -23,6 +24,7 @@ If it is not there already then the word will go in
 row "1", otherwise it will increase the row the word is in
 '''
 def add_value(toAdd, json):
+    # clicks_to_complete
     toAdd.lower()
     for row in json:
         for word in json[row]:
@@ -40,7 +42,19 @@ def add_value(toAdd, json):
     # were found so we just add the word to the array in row "1"
     json["1"].append(toAdd)
 
+'''
+Counts and adds up the total number of clicked words and returns that vaue
+'''
+def count_words(json):
+    count = 0
+    for row in json:
+        count += int(row) * len(json[row])
+    return count
 
+'''
+Uses the _post_pk and _request.user to find the post_info object to update with the _text that was clicked
+and then uses the specified _method (see enum) to update the correct JSON
+'''
 def update_database(_request, _method, _post_pk, _text):
     post = models.Post.objects.get(id=_post_pk)
     post_member = post.post_asignees.filter(user = _request.user)[0]
@@ -51,6 +65,14 @@ def update_database(_request, _method, _post_pk, _text):
         data = json.loads(post_info.single_clicks)
         add_value(_text, data)
         post_info.single_clicks = json.dumps(data)
+
+        # Check to see if assignment is complete
+        if (not post_info.post_member.has_completed_work):
+            # if the clicked words is more than the required clicks, then update the completion date and completion boolean
+            if (count_words(data) >= post_info.post_member.post.clicks_to_complete):
+                post_info.post_member.has_completed_work = True
+                post_info.post_member.completion_date = datetime.now()
+                post_info.post_member.save()
     elif (_method == Methods.TwoClick):
         data = json.loads(post_info.double_clicks)
         add_value(_text, data)
@@ -102,6 +124,7 @@ class ErrorCodes():
      }
     }
 
+    # 400 error when a bad request is made (such as missing param)
     r400 = {
      "error": {
       "errors": [

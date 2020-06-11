@@ -8,6 +8,8 @@ import misaka
 from django.contrib.auth import get_user_model
 from groups.models import Group
 
+from django.core.validators import MaxValueValidator, MinValueValidator 
+
 from datetime import date
 import json
 User = get_user_model()
@@ -34,6 +36,7 @@ class Post(models.Model):
     from_lang = models.ForeignKey('SupportedLanguages', related_name="from_langs", on_delete=models.CASCADE)
     to_lang = models.ForeignKey('SupportedLanguages', related_name="to_langs", on_delete=models.CASCADE, default=2)
 
+    clicks_to_complete = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
     def save(self, *args, **kwargs):
         self.body_text = misaka.html(self.body_text)
 
