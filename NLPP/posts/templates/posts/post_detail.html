@@ -18,6 +18,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      
+        <button type="button" id="MoreInfo" class="btn btn-info" >More Info</button>
       </div>
     </div>
   </div>
@@ -38,13 +40,28 @@ function get_selection() {
 }
 
 $(document).dblclick(function(e) {
-    var t = get_selection();
-    var l = '{{post.from_lang.code}}' + "\-" + '{{post.to_lang.code}}';
+    var t = get_selection().toString();
+    t = t.trim();
+    t = t.toLowerCase();
+    var l = '{{post.from_lang.code}}' + "\-" + '{{post.from_lang.code}}'
+    synonym_api_call(t, l);
+  
 
-    translate_api_call(t.toString(), l);
+    
 });
 
+$(function(){
+    $('#MoreInfo').click(function() {
+      var t = get_selection().toString();
+      t = t.trim();
+      t = t.toLowerCase();
+      var l = '{{post.from_lang.code}}' + "\-" + '{{post.to_lang.code}}';
+      translate_api_call(t.toString(), l); 
+    });
+});
 
+// Get translation of the given word and insert it into the modal
+// Disables the more info button as well
 function translate_api_call(p_text="error", p_lang="es-en") {
   $.ajax({
         type: "POST",
@@ -53,7 +70,8 @@ function translate_api_call(p_text="error", p_lang="es-en") {
             csrfmiddlewaretoken: '{{ csrf_token }}',
             text: p_text,
             lang: p_lang,
-            post_pk: '{{post.id}}'
+            post_pk: '{{post.id}}',
+            update: 'y',
               },
         success:  function(response){
 
@@ -68,7 +86,124 @@ function translate_api_call(p_text="error", p_lang="es-en") {
 
 
                $("#api-filler").html(translation_text);
+               translate_synonyms(p_text, p_lang)
+               $("#MoreInfo").toggle(false);
+               
+               
+           }
+    });
+}
+
+// Get the synoynms of the text parameter in the given language and insert it into the blank
+function translate_synonyms(p_text="error", p_lang="error"){
+  $.ajax({
+        type: "POST",
+        url: '{% url "synonyms"  %}',
+        data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            text: p_text,
+            lang: p_lang,
+            post_pk: '{{post.id}}',
+            update: 'n',
+              },
+        success:  function(response){
+          var stringBuilder = "";
+               // Loop through the elements of the JSON to get/format the words
+               for (definition in response){
+                  if (response.length > 1 ){ stringBuilder += "<h5> Set " + (parseInt(definition) + 1).toString(10) + "</h5>";  }
+                  stringBuilder += "<ul>";
+
+                  // Gets the acutal words under each definition
+                  for (word in response[definition]){
+                    // Adds the parent word to the list
+                    stringBuilder += "<li>" + word + "</li>";
+
+                    // Adds the children to the indented list
+                    stringBuilder += "<ul>";
+                    for (childWord in response[definition][word]) {
+                      stringBuilder += "<li>" + response[definition][word][childWord] + "</li>";
+                    }
+                    stringBuilder += "</ul>";
+                  }
+                  stringBuilder += "</ul>";
+               }
+
+               if (stringBuilder.length < 1) { $("#api-filler").append("<em>No synonyms found</em>");  return ;}  
+
+                $.ajax({
+                  type: "POST",
+                  url: '{% url "translate"  %}',
+                  data: {
+                      csrfmiddlewaretoken: '{{ csrf_token }}',
+                      text: stringBuilder,
+                      lang: '{{post.from_lang.code}}' + "\-" + '{{post.to_lang.code}}',
+                      post_pk: '{{post.id}}',
+                      update: 'n',
+                        },
+
+                  success:  function(response){
+                    $("#api-filler").append("<h5 class='mt-5'> Alternate Translations </h5>" + response["text"])
+                    console.log(response["text"]);   
+                  }
+                });
+                
+        }
+    });
+}
+
+// Get the synoynms of the text parameter in the given language post.from_lang.code
+// And insert it into the modal (re-enable button to go to the next page)
+function synonym_api_call(p_text="error", p_lang="error") {
+  $.ajax({
+        type: "POST",
+        url: '{% url "synonyms"  %}',
+        data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            text: p_text,
+            lang: p_lang,
+            post_pk: '{{post.id}}',
+            update: 'y',
+              },
+        success:  function(response){
+               var stringBuilder = "";
+               // Loop through the elements of the JSON to get/format the words
+               for (definition in response){
+                  if (response.length > 1 ){ stringBuilder += "<h5> Set " + (parseInt(definition) + 1).toString(10) + "</h5>";  }
+                  stringBuilder += "<ul>";
+
+                  // Gets the acutal words under each definition
+                  for (word in response[definition]){
+                    // Adds the parent word to the list
+                    stringBuilder += "<li>" + word + "</li>";
+
+                    // Adds the children to the indented list
+                    stringBuilder += "<ul>";
+                    for (childWord in response[definition][word]) {
+                      stringBuilder += "<li>" + response[definition][word][childWord] + "</li>";
+                    }
+                    stringBuilder += "</ul>";
+                  }
+                  stringBuilder += "</ul>";
+               }
+
+               if (stringBuilder.length < 1) { stringBuilder = "no synomyns found"; }
+
+               var synomyn_text = "<p> <span class='lead'>Synomyns: </span>" +  stringBuilder + "</p>";
+
+       
+               synomyn_text += '<p>View on the translator for more translations and translators</p>';
+
+               synomyn_text += "<p class='my-1'><a class='mx-4' target='_blank' href='https://translate.yandex.com/?lang=" + "{{post.from_lang.code}}" + "\-" + "{{post.to_lang.code}}"+"&text="+p_text+"'>Yandex (Gives Synomyns + Translations!)</a></p>";
+               synomyn_text += "<p class='my-1'><a class='mx-4' target='_blank' href='https://translate.google.com/?q="+p_text+"&sl={{post.to_lang.code}}+&tl={{post.to_lang}}'>Google Translate</a></p>"; 
+            
+
+
+
+
+               $("#api-filler").html(synomyn_text);
+               $("#MoreInfo").toggle(true);
                $('#translateModal').modal('toggle');
+               
            }
     });
 }

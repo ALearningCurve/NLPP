@@ -19,14 +19,21 @@
 
             <a class="hover-darken no-border card collapsed px-1" data-toggle="collapse" data-target="#collapse{{member.id}}" aria-expanded="true" aria-controls="collapse{{member.id}}">
 
-            <!-- Shows the username and actual name of the asignees -->
+            {% comment %}  Shows the username and actual name of the asignees {% endcomment %}
             <li> {{member.user.username}} &emsp; ({{member.user.first_name}} {{member.user.last_name}}) <br> </li>
-            <!-- shows wether or no work is completd, if completed shows date of completion -->
+            {% comment %} shows wether or no work is completd, if completed shows date of completion {% endcomment %}
             {% if member.has_completed_work %}
-              <p class="text-success"> Completed on {{member.completion_date}}</p>
+              {% comment %} If the completion date is past the due date then show text as red {% endcomment %}
+              {% if member.completion_date > member.post.due_date %}
+                  <p class="text-danger">
+              {% else %}
+                <p class="text-success">
+              {% endif %}
+               Completed on {{member.completion_date}}</p>
             {% else %}
               <p class="text-danger"> Incomplete </p>
             {% endif %}
+
             </a>
           </div>
           <!-- this is what is shown their name is clicked -->
@@ -35,7 +42,7 @@
               <div class="container" id="heading{{member.id}}A">
               <!-- header for table single clicks-->
               <div class="hover-darken no-border card px-1 w-50" >
-                <a data-toggle="collapse" data-target="#collapse{{member.id}}A"><h5 class="font-weight-light">Single Clicks</h5></a>
+                <a data-toggle="collapse" data-target="#collapse{{member.id}}A"><h5 class="font-weight-light">Single Clicks (Synonyms)</h5></a>
               </div>
               <!-- data revealed by header single -->
               <div class="card collapse no-border"  id="collapse{{member.id}}A">
@@ -46,7 +53,7 @@
             <div class="container" id="heading{{member.id}}B">
               <!-- header for tabe double clicks -->
               <div class="hover-darken no-border card px-1 w-50" >
-                <a  data-toggle="collapse" data-target="#collapse{{member.id}}B"><h5 class="font-weight-light">Double Clicks</h5></a>
+                <a  data-toggle="collapse" data-target="#collapse{{member.id}}B"><h5 class="font-weight-light">Double Clicks (Definitions)</h5></a>
               </div>
               <!-- Data revealed by header double clicks -->
               <div class="card collapse px-1 no-border"  id="collapse{{member.id}}B">

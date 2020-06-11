@@ -8,6 +8,8 @@ import misaka
 from django.contrib.auth import get_user_model
 from groups.models import Group
 
+from django.core.validators import MaxValueValidator, MinValueValidator 
+
 from datetime import date
 import json
 User = get_user_model()
@@ -34,6 +36,7 @@ class Post(models.Model):
     from_lang = models.ForeignKey('SupportedLanguages', related_name="from_langs", on_delete=models.CASCADE)
     to_lang = models.ForeignKey('SupportedLanguages', related_name="to_langs", on_delete=models.CASCADE, default=2)
 
+    clicks_to_complete = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
     def save(self, *args, **kwargs):
         self.body_text = misaka.html(self.body_text)
 
@@ -65,7 +68,8 @@ class Post(models.Model):
 
 
 class SupportedLanguages(models.Model):
-    code = models.CharField(max_length=5, unique=True)
+    code = models.CharField(max_length=2, unique=True, null=False)
+    ISO639_1 = models.CharField(max_length=5, unique=True, null=False)
     name = models.CharField(max_length=15, unique=True, null=True)
 
     def __str__(self):
@@ -92,7 +96,7 @@ class PostMemberInteractionInformation(models.Model):
     # This should be the synomyns
     single_clicks = models.TextField()
     # Keeps track of the double clicks in the double click modal
-    # This should be the definitions
+    # This should be the translations
     double_clicks = models.TextField()
 
     def __str__(self):

@@ -81,12 +81,15 @@ class DeletePost(LoginRequiredMixin, generic.DeleteView):
 # https://stackoverflow.com/questions/51106830/how-to-call-python-functions-from-javascript-in-django
 # That link is how we will integrate this function with the translations, or maybe we will use js
 def translate(request):
-    url = "https://translate.yandex.net/api/v1.5/tr.json/translate?"
-    key = "trnsl.1.1.20200117T014254Z.b5ec263d36a25c07.698d2465df9fd59677fe87985d82aa6fef88f8af"
-    text = request.POST['text']
-    lang = request.POST['lang']
-    post_pk = request.POST['post_pk']
-
+    try:
+        url = "https://translate.yandex.net/api/v1.5/tr.json/translate?"
+        key = "trnsl.1.1.20200117T014254Z.b5ec263d36a25c07.698d2465df9fd59677fe87985d82aa6fef88f8af"
+        text = request.POST['text'].lower().strip()
+        lang = request.POST['lang']
+        post_pk = request.POST['post_pk']
+        update = request.POST['update']
+    except:
+        return JsonResponse(JSONHandler.ErrorCodes.r400)
 
     is_cached = ('trans_'+lang+"_"+text in request.session)
 
@@ -97,30 +100,56 @@ def translate(request):
 
     translation = request.session['trans_'+lang+"_"+text]
 
-    JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.OneClick, _post_pk = post_pk, _text = text)
+    if (update == "y"):
+        JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.TwoClick, _post_pk = post_pk, _text = text)
     return JsonResponse(translation)
 
-def dictionary(request):
-    app_id = '87df45ef'
-    app_key = '35efd56c2ddcebd8d306ef8af27773d2'
+def synonyms(request):
+    try:
+        url = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?"
+        key = "dict.1.1.20200122T170248Z.de87d85bf55ff34f.1d5d0127e696c6496ff9250a57595d18c38f5abd"
+        text = request.POST['text'].lower().strip()
+        lang = request.POST['lang']
+        update = request.POST['update']
+        post_pk = request.POST['post_pk']
+    except:
+        return JsonResponse(JSONHandler.ErrorCodes.r400)
 
-    language = 'es'
-    word_id = 'perro'
-    url = 'https://od-api.oxforddictionaries.com:443/api/v2/entries/'  + language + '/'  + word_id.lower()
-    #url Normalized frequency
-    #urlFR = 'https://od-api.oxforddictionaries.com:443/api/v2/stats/frequency/word/'  + language + '/?corpus=nmc&lemma=' + word_id.lower()
-    r = requests.get(url, headers = {'app_id' : app_id, 'app_key' : app_key})
-    print("code {}\n".format(r.status_code))
-    r = r.json()
 
-    #print ("<br>".join(r['results'][0]['lexicalEntries'][0]['entries'][0]['senses'][0]['definitions'])) #['lexicalEntries'])
-    print ("\n--------")
-    for i in range(len(r['results'][0]['lexicalEntries'])):
-        print ("\n".join(r['results'][0]['lexicalEntries'][i]['entries'][0]['senses'][0]['definitions'])) #['lexicalEntries'])
-        print ("--------")
-    #print("text \n" + r.text)
-    #print("json \n" + json.dumps(r.json()))
-    return HttpResponse(json.dumps(r))
+
+    # Request data from the yandex API
+    url = url + "key="+key+"&text="+text+"&lang="+lang
+    response = requests.get(url, verify=False)
+    data = json.loads(response.text)
+
+    info = {}   #dictionary holding all the words under all the definitions
+    words = {}  #dictipmary holding words under each definitions
+    sub = []    #holds the words under the "syn" key
+    
+    try:
+        # Loop through possible definitions of the word
+        for definition in range(len(data["def"])):
+            words = {}
+            # Loop through all of the words used to describe the word
+            for entry in range(len((data["def"][definition]["tr"]))):
+                sub = []
+                # Get the nested words (if any)
+                if ('syn' in data["def"][definition]["tr"][entry]):
+                    for child in range(len(data["def"][definition]["tr"][entry]['syn'])):
+                        sub.append(data["def"][definition]["tr"][entry]['syn'][child]['text'])
+
+                words[data["def"][definition]["tr"][entry]['text']] = sub
+            
+                        
+            info[str(definition)] = words  
+        if (update == "y"):
+            JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.OneClick, _post_pk = post_pk, _text = text)
+        return JsonResponse(info)
+    except:
+        print("___________________")
+        print(json.dumps(data))
+        print("___________________")
+        return JsonResponse({})
 
 
 # Uses language processing to convert images or extract from pdfs/word docs
