@@ -87,6 +87,7 @@ def translate(request):
         text = request.POST['text'].lower().strip()
         lang = request.POST['lang']
         post_pk = request.POST['post_pk']
+        update = request.POST['update']
     except:
         return JsonResponse(JSONHandler.ErrorCodes.r400)
 
@@ -99,7 +100,8 @@ def translate(request):
 
     translation = request.session['trans_'+lang+"_"+text]
 
-    JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.TwoClick, _post_pk = post_pk, _text = text)
+    if (update == "y"):
+        JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.TwoClick, _post_pk = post_pk, _text = text)
     return JsonResponse(translation)
 
 def synonyms(request):
@@ -107,6 +109,8 @@ def synonyms(request):
     key = "dict.1.1.20200122T170248Z.de87d85bf55ff34f.1d5d0127e696c6496ff9250a57595d18c38f5abd"
     text = request.POST['text'].lower().strip()
     lang = request.POST['lang']
+    update = request.POST['update']
+    post_pk = request.POST['post_pk']
 
 
 
@@ -134,7 +138,9 @@ def synonyms(request):
         
                     
         info[str(definition)] = words  
-    print(url)
+    if (update == "y"):
+        JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.OneClick, _post_pk = post_pk, _text = text)
+
     return JsonResponse(info)
 
 
