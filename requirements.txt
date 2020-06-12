@@ -33,7 +33,7 @@ numpy==1.18.1
 olefile==0.46
 opencv-python==4.2.0.32
 pdfminer.six==20181108
-Pillow==6.2.1
+Pillow>=6.2.2
 post==2019.4.13
 promise==2.2.1
 public==2019.4.13
