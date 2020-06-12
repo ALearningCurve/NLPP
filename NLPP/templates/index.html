@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-
+  <!-- the site introduction that displays on the main page-->
     <div class="container jumbotron">
       <h1 class="display-1"> Welcome!</h1>
       <hr class="my-4">
@@ -11,11 +11,15 @@
           or if you already made an account, go to the <a href="{% url 'accounts:login' %}">Login Page</a>.
           With that out of the way, you can join your first <em><b>group</b></em>
       </p>
+
+      <!-- stuff about groups -->
       <div class="mx-4 mt-2">
         <h3> Whats a group?  </h3>
         <p>
           Groups are where you and others can join and view the same filtered and posted content!
         </p>
+
+        <!-- sub point -->
         <h4 class="mx-4">Joining a Group</h4>
         <p class="mx-4">
           To join a group simply obtain a join code from someone already in the group, and then you can go to the
@@ -23,9 +27,110 @@
           be added to <a href="{% url 'groups:all' %}">My Groups Page</a>. In the <a href="{% url 'groups:all' %}">My Groups Page</a>
           you can see all the groups you have joined or made.
         </p>
-      <div>
-    </div>
-  </div>
-  </div>
+
+        <!-- sub point -->
+        <h4 class="mx-4">Whats in a Group?</h4>
+        <p class="mx-4">
+          Once you have joined a group, you now have acess to all of the posts within that group! This means that you can begin interacting with all of the 
+          <a href="#posts-header">posts</a> that the group owner has put into the group. Want to leave the group? Where the join button used to be it will now say leave, you just have to click
+          it once and you'll be out of there. 
+        </p>
+        
+        <!-- sub point -->
+        <h4 class="mx-4">I am the creator</h4>
+        <p class="mx-4">
+          As the creator you can see all of the member of your group and then kick out unwanted members. To kick a member click on the on the members button
+          near the top of the page and scroll through the list of members to then kick that member.
+        </p>
+      </div>
+      <!-- end groups-->
+
+      <!-- stuff about posts -->
+      <div class="mx-4 mt-2">
+          <h3 id="posts-header"> Whats a Post?  </h3>
+          <p>
+            Posts are where you and other can interact with readings to gain a greator understanding of the content.
+          </p>
+
+           <!-- sub point -->
+          <h4 class="mx-4">Finding a Post</h4>
+          <p class="mx-4">
+            to find a post you must go the group that the post is in, have joined the group, and then scroll through the posts until you find the correct one.
+            Posts are ordered by date created, so new posts are at the top and older posts are near the bottom.
+          </p>
+
+          <!-- sub point -->
+          <h4 class="mx-4">Whats in a Post</h4>
+          <p class="mx-4">
+            Once you click on the post you will see the title of the post with the description and some other data like due-date under that. Underneath the 
+            description, you will see the body of the post. This is where you read the information and then are able to <a href="#double-click-header">
+            double click words</a>.
+          </p>
+
+          <!-- sub point -->
+          <h4 class="mx-4" id="double-click-header">Double Clicking?</h4>
+          <p class="mx-4">
+            When you double click a word, a modal (a drop down) will appear telling you the synonym of the word that you clicked on. If you are still unsure of 
+            what the word means, you can get a direct translation by clicking the more info button. When you double click a word it will be added to the list of
+            single clicked words(synonyms) and when you click more info it will be added to the list of double clicked words(translations) to view these lists
+            go to the post, and click the interaction info button.
+          </p>
+
+          <!-- sub point -->
+          <h4 class="mx-4" id="double-click-header-info">Interaction Information</h4>
+          <p class="mx-4">
+            The words you double click or request more info about will be stored and to view these words click on the interaction info button on the post details page.
+            When you click the button a modal (a drop down) will appear with your name. Simply click your name to reveal the categories (single click (synonym) and 
+            double click (translate)). Clicking one of these categories will reveal a table with the words that you have clicked. <b> You must of been in the group when the
+            post was assigned to view this information. If you joined the group after the post was made, your click data will not be tracked</b>
+          </p>
+
+          <!-- sub point -->
+          <h4 class="mx-4">I am the creator</h4>
+          <p class="mx-4">
+            As the creator you can: 
+          </p>
+
+          <div class="mx-4">
+            <!-- sub sub point -->
+            <h5 class="mx-4">Make a Post</h5>
+            <p class="mx-4">
+              To make a post you must be the creator of the group. If you are the creator of the group, click on the group from My Groups and then click on the Add Post
+              button which will take you to a form you must complete. Fill in the feilds appropiatly, but if you want to stlye the body (the main content) then use the 
+              provided TinyMCE styling at the top of the textbox. Also, for due dates follow the strict format of 'year-month-day hr:min:sec'. From lang[uage] is the language
+              the source material is in and To lang[uage] is the language for the text to be translated into.
+            </p>
+
+            <!-- sub sub point -->
+            <h5 class="mx-4">Uploads</h5>
+            <p class="mx-4">
+              Posts allow you to extract text from images (".bmp", ".pnm", ".png", ".jfif", ".jpeg", ".jpg"), word docs (".doc", ".docx"), and pdf (".pdf"). To use this feature
+              scroll to the bottom of the form and under the Post! button click the button "text upload and extraction". Both pdfs and images that are
+              uploaded use OCR word recognition and word docs that are uploaded will have the text and stlying directly extracted. This means that the image and pdf text extractions
+              are subject to error, so if your pdf is is 100% text use a pdf text extractor instead.
+            </p>
+
+            <!-- sub sub point -->
+            <h5 class="mx-4">See Interaction Information</h5>
+            <p class="mx-4">
+              As the creator you can view the post member interaction information for all of the members who were in the group at the time the post was assigned. see
+              <a href="#double-click-header">double clicking</a> and <a href="#double-click-header-info">interaction information</a> for more information of what this data means.
+              The creator can also see the collective (agregate) data from all of the post asignees/post members at the bttom of the interaction info modal.
+            </p>
+
+            <!-- sub sub point -->
+            <h5 class="mx-4">Set and See Completion</h5>
+            <p class="mx-4">
+              As the creator you can see wether or not a user had completed an assignment and upon completion you can see the date and if it was done on time. If it was done on time,
+              the font will show the date in green, but if it was late or incomplete then the font will red. Clicks required for completion can <b>only</b> be set when creating the 
+              post. the minimun required clicks is 0 and the maximum required clicks is 100.
+            </p>
+          </div>
+      </div>
+      <!-- end posts -->
+
+
+<!-- end jumbotron -->
+</div>
 
 {% endblock %}

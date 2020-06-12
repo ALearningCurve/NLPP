@@ -3,13 +3,13 @@ argon2-cffi==19.2.0
 asgiref==3.2.3
 bcrypt==3.1.7
 beautifulsoup4==4.8.0
-bleach==3.1.0
+bleach==3.1.4
 bootstrap4==0.1.0
 certifi==2019.11.28
 cffi==1.13.2
 chardet==3.0.4
 Cython==0.29.15
-Django==3.0
+Django==3.0.7
 django-bleach==0.6.1
 django-bootstrap4==1.1.1
 django-braces==1.13.0
@@ -33,7 +33,7 @@ numpy==1.18.1
 olefile==0.46
 opencv-python==4.2.0.32
 pdfminer.six==20181108
-Pillow==6.2.1
+Pillow>=6.2.2
 post==2019.4.13
 promise==2.2.1
 public==2019.4.13

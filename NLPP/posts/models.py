@@ -51,7 +51,7 @@ class Post(models.Model):
                     post=self,
                     user=member,
                     has_completed_work=False,
-                    completion_date=date(2005, 7, 27),
+                    completion_date=null
                 )
                 post_mem.save()
 
@@ -114,7 +114,7 @@ class PostMembers(models.Model):
     user = models.ForeignKey(User,related_name='posts_assigned',on_delete=models.CASCADE)
 
     has_completed_work = models.BooleanField(default=False)
-    completion_date = models.DateTimeField()
+    completion_date = models.DateTimeField(null=True)
 
 
     def save(self, *args, **kwargs):

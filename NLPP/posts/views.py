@@ -34,7 +34,7 @@ class PostDetail(LoginRequiredMixin, generic.DetailView):
 
 class CreatePost(LoginRequiredMixin, generic.CreateView):
     # form_class = forms.PostForm
-    fields = ("name", "description", "body_text", "from_lang","to_lang","due_date")
+    fields = ("name", "description", "body_text", "from_lang","to_lang","due_date", "clicks_to_complete")
     model = models.Post
 
 
@@ -80,6 +80,7 @@ class DeletePost(LoginRequiredMixin, generic.DeleteView):
 # this function returns a json file containing the translation
 # https://stackoverflow.com/questions/51106830/how-to-call-python-functions-from-javascript-in-django
 # That link is how we will integrate this function with the translations, or maybe we will use js
+@login_required
 def translate(request):
     try:
         url = "https://translate.yandex.net/api/v1.5/tr.json/translate?"
@@ -104,6 +105,7 @@ def translate(request):
         JSONHandler.update_database(_request = request, _method = JSONHandler.Methods.TwoClick, _post_pk = post_pk, _text = text)
     return JsonResponse(translation)
 
+@login_required
 def synonyms(request):
     try:
         url = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?"
@@ -169,9 +171,35 @@ def member_info_detail(request, slug, post_info_pk, method):
     # If user is not one the person who made the data or own the post, then return an error
     if(post_info.post_member.user != request.user and post_info.post_member.post.creator != request.user):
         return JsonResponse(JSONHandler.ErrorCodes.r403)
+    
+    # If the method does not exist, then return HttpError 400
+    if (not method in JSONHandler.Methods._value2member_map_ ):
+        return JsonResponse(JSONHandler.ErrorCodes.r400)
+
     # Get the json from th e table and return the data or if not found return 404 error
     info = JSONHandler.get_json(_method = method, _info_object = post_info)
     return JsonResponse(info)
+
+# Gets the postInfo objects from the post_pk
+# Returns a JSON with the post member info objects
+@login_required
+def collective_member_info_detail(request, slug, pk, method):
+    post = get_object_or_404(models.Post,id=pk)
+    members = post.post_asignees.all()
+    
+    # If the method does not exist, then return HttpError 400
+    if (not method in JSONHandler.Methods._value2member_map_ ):
+        return JsonResponse(JSONHandler.ErrorCodes.r400)
+    
+    # If user is not one the person who made the data or own the post, then return an error
+    if(post.creator != request.user):
+        return JsonResponse(JSONHandler.ErrorCodes.r403)
+
+    data = {}
+    for member in members:
+        data["member_"+str(member.post_info.id)] = JSONHandler.get_json(_method = method, _info_object = member.post_info)
+
+    return JsonResponse(data)
 
 
 # fills out a graph with the provided information
