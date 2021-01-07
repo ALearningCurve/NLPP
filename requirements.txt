@@ -26,7 +26,7 @@ get==2019.4.13
 idna==2.8
 image==1.5.28
 IMAPClient==2.1.0
-lxml==4.5.0
+lxml==4.6.2
 misaka==2.1.1
 nltk==3.4.5
 numpy==1.18.1
