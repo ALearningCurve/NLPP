@@ -18,7 +18,7 @@ django-debug-toolbar==2.1
 django-html-sanitizer==0.1.5
 django-parler==2.0
 django-six==1.0.4
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 docx2txt==0.8
 EbookLib==0.17.1
 extract-msg==0.23.1
