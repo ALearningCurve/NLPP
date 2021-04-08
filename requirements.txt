@@ -9,7 +9,7 @@ certifi==2019.11.28
 cffi==1.13.2
 chardet==3.0.4
 Cython==0.29.15
-Django==3.0.7
+Django==3.0.14
 django-bleach==0.6.1
 django-bootstrap4==1.1.1
 django-braces==1.13.0
