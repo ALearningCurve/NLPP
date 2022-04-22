@@ -39,7 +39,7 @@ promise==2.2.1
 public==2019.4.13
 pycparser==2.19
 pycryptodome==3.9.7
-PyPDF2==1.26.0
+PyPDF2==1.27.5
 pystache==0.5.4
 pytesseract==0.3.2
 python-pptx==0.6.18
