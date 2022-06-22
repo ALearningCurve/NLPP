@@ -29,7 +29,7 @@ IMAPClient==2.1.0
 lxml==4.5.0
 misaka==2.1.1
 nltk==3.4.5
-numpy==1.18.1
+numpy==1.22.0
 olefile==0.46
 opencv-python==4.2.0.32
 pdfminer.six==20181108
